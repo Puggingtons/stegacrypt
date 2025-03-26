@@ -1,0 +1,37 @@
+@startuml
+
+file "Dokument" as doc
+file "Bild" as img_start
+file "Bild" as img_end
+
+action "verschlüsseln" as encrypt
+action "verstecken" as hide
+action "Schlüsselaustausch" as keyexchange
+
+database "Schlüssel für Nutzer" as keydatabase
+
+component "Kryptographischer Algorithmus" as cryptography
+component "Steganographischer Algorithmus" as steganography
+
+card "Schlüssel" as key
+
+doc -down-> encrypt
+encrypt -right-> hide
+hide -right-> img_end
+
+cryptography -up-> encrypt
+steganography -up-> hide
+img_start -down-> hide
+
+key -up-> cryptography
+key -left-* keydatabase
+key -right- keyexchange
+
+package Qualitätsanalyse {
+    action "Steganographische Qualität" as steganographic_quality
+    action "Kryptographische Qualität" as cryptographic_quality
+}
+
+img_end -right-> steganographic_quality
+img_end -right-> cryptographic_quality
+@enduml
