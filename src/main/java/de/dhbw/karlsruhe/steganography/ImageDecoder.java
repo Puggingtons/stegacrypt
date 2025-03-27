@@ -2,24 +2,30 @@ package de.dhbw.karlsruhe.steganography;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class ImageDecoder {
-    private final BufferedImage image;
+    private BufferedImage image;
     private List<Byte> bytes;
 
     private byte currentByte;
     private int bitCount;
 
-    public ImageDecoder(BufferedImage image) {
-        this.image = image;
+    private int numberOfBytes;
+    private int numberOfBytesBitCount;
+
+    public ImageDecoder() {
         this.bytes = new ArrayList<>();
         this.currentByte = 0;
         this.bitCount = 0;
+
+        this.numberOfBytes = 0;
+        this.numberOfBytesBitCount = 0;
     }
 
-    public Byte[] decode() {
+    public Byte[] decode(BufferedImage image) {
+        this.image = image;
+
         for (int y = 0; y < image.getHeight(); y++) {
             for (int x = 0; x < image.getWidth(); x++) {
                 int color = image.getRGB(x, y);
@@ -30,8 +36,11 @@ public class ImageDecoder {
                     } else {
                         pushZero();
                     }
-                }
 
+                    if (numberOfBytesBitCount == 32 && numberOfBytes == bytes.size()) {
+                        return bytes.toArray(new Byte[0]);
+                    }
+                }
             }
         }
 
@@ -47,6 +56,12 @@ public class ImageDecoder {
     }
 
     private void push(int v) {
+        if (numberOfBytesBitCount != 32) {
+            numberOfBytes = (numberOfBytes << 1) + v;
+            numberOfBytesBitCount++;
+            return;
+        }
+
         currentByte = (byte) ((currentByte << 1) + v);
         bitCount++;
 

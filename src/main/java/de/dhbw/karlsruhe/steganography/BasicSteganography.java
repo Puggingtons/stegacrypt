@@ -9,15 +9,15 @@ public class BasicSteganography implements Steganography {
             throw new IllegalArgumentException("input does not fit in the image");
         }
 
-        ImageWriter writer = new ImageWriter(image);
-        writer.writeData(input);
-        return writer.getImage();
+        ImageWriter writer = new ImageWriter();
+
+        return writer.writeData(image, input);
     }
 
     @Override
     public byte[] decode(BufferedImage image) {
-        ImageDecoder imageDecoder = new ImageDecoder(image);
-        Byte[] result = imageDecoder.decode();
+        ImageDecoder imageDecoder = new ImageDecoder();
+        Byte[] result = imageDecoder.decode(image);
 
         byte[] bytes = new byte[result.length];
 

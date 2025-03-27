@@ -3,20 +3,41 @@ package de.dhbw.karlsruhe.steganography;
 import java.awt.image.BufferedImage;
 
 public class ImageWriter {
-    private final BufferedImage image;
+    private BufferedImage image;
 
     private int currentX;
     private int currentY;
     private int currentColorOffset;
 
-    public ImageWriter(BufferedImage image) {
-        this.image = image;
+    public ImageWriter() {
         currentX = 0;
         currentY = 0;
         currentColorOffset = 0;
     }
 
-    public void writeData(byte[] data) {
+    public BufferedImage writeData(BufferedImage image, byte[] data) {
+        this.image = image;
+        writeNumberOfBytes(data);
+        writeDataBytes(data);
+
+        return this.image;
+    }
+
+    private void writeNumberOfBytes(byte[] data) {
+        int numberOfBytes = data.length;
+
+        for (int i = 0; i < 32; i++) {
+            if (((numberOfBytes >> 31) & 1) == 1) {
+                writeOne();
+            } else {
+                writeZero();
+            }
+
+            numberOfBytes = numberOfBytes << 1;
+        }
+    }
+
+    private void writeDataBytes(byte[] data) {
         for (byte b : data) {
             for (int i = 0; i < 8; i++) {
                 if ((b & 128) == 128) {
@@ -30,18 +51,14 @@ public class ImageWriter {
         }
     }
 
-    public void writeOne() {
+    private void writeOne() {
         image.setRGB(currentX, currentY, image.getRGB(currentX, currentY) | currentBitMask());
         next();
     }
 
-    public void writeZero() {
+    private void writeZero() {
         image.setRGB(currentX, currentY, image.getRGB(currentX, currentY) & ~currentBitMask());
         next();
-    }
-
-    public BufferedImage getImage() {
-        return image;
     }
 
     private int currentBitMask() {
