@@ -1,5 +1,6 @@
 package de.dhbw.karlsruhe;
 
+import de.dhbw.karlsruhe.steganography.BasicSteganography;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 import javax.imageio.ImageIO;
@@ -14,6 +15,53 @@ public class Main {
     public static void main(String[] args) throws IOException {
         setupSecurity();
 
+        BufferedImage image = new BufferedImage(8, 8, BufferedImage.TYPE_INT_ARGB);
+
+        var text = "abcdef".getBytes();
+
+        BasicSteganography basicSteganography = new BasicSteganography();
+
+        System.out.println(basicSteganography.canEncode(text, image));
+
+        BufferedImage result = basicSteganography.encode(text, image);
+
+        byte[] decoded = basicSteganography.decode(result);
+
+        printBytes(text);
+        System.out.println();
+        printImage(result);
+
+        System.out.println("------------");
+
+        printBytes(text);
+        printBytes(decoded);
+    }
+
+    private static void setupSecurity() {
+        Security.addProvider(new BouncyCastleProvider());
+    }
+
+    public static String leftPad(String text, int len, char value) {
+        StringBuilder sb = new StringBuilder();
+        if (text.length() < len) {
+            sb.append(String.valueOf(value).repeat(len - text.length()));
+            sb.append(text);
+            return sb.toString();
+        }
+        return text;
+    }
+
+    public static String rightPad(String text, int len, char value) {
+        StringBuilder sb = new StringBuilder();
+        if (text.length() < len) {
+            sb.append(text);
+            sb.append(String.valueOf(value).repeat(len - text.length()));
+            return sb.toString();
+        }
+        return text;
+    }
+
+    private static void dings() throws IOException {
         BufferedImage img = ImageIO.read(new File("examples/lenna.png"));
 
         int bit_per_color = 0b1111_1111;
@@ -51,27 +99,34 @@ public class Main {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
-    private static void setupSecurity() {
-        Security.addProvider(new BouncyCastleProvider());
+    private static void printBytes(byte[] input) {
+        StringBuilder sb = new StringBuilder();
+        for (byte b : input) {
+            sb.append(leftPad(Integer.toBinaryString(b), 8, '0'));
+            sb.append(" ");
+        }
+        System.out.println(sb);
     }
 
-    public static String leftPad(String text, int len, char value) {
+    private static void printPixel(int pixel) {
+        String s = new StringBuilder(leftPad(Integer.toBinaryString(pixel), 32, '0')).reverse().toString();
+
         StringBuilder sb = new StringBuilder();
-        if (text.length() < len) {
-            sb.append(String.valueOf(value).repeat(len - text.length()));
-            sb.append(text);
-            return sb.toString();
+
+        for (int i = 0; i < 24; i += 8) {
+            sb.append(s, i, Math.min(s.length(), i + 8));
+            sb.append(" ");
         }
-        return text;
+
+        System.out.println(sb);
     }
 
-    public static String rightPad(String text, int len, char value) {
-        StringBuilder sb = new StringBuilder();
-        if (text.length() < len) {
-            sb.append(text);
-            sb.append(String.valueOf(value).repeat(len - text.length()));
-            return sb.toString();
+    private static void printImage(BufferedImage img) {
+        System.out.println("bbbbbbbb gggggggg rrrrrrrr \n");
+        for (int y = 0; y < img.getHeight(); y++) {
+            for (int x = 0; x < img.getWidth(); x++) {
+                printPixel(img.getRGB(x, y));
+            }
         }
-        return text;
     }
 }
