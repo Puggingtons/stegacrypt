@@ -2,10 +2,22 @@ package de.dhbw.karlsruhe.steganography;
 
 import java.awt.image.BufferedImage;
 
-public interface Steganography {
-    BufferedImage encode(byte[] input, BufferedImage image);
+public abstract class Steganography {
+    public BufferedImage encode(byte[] input, BufferedImage image) {
+        if (!canEncode(input, image)) {
+            throw new IllegalArgumentException("input does not fit in the image");
+        }
 
-    byte[] decode(BufferedImage image);
+        return getImageWriter().writeData(image, input);
+    }
 
-    boolean canEncode(byte[] input, BufferedImage image);
+    public byte[] decode(BufferedImage image) {
+        return getImageDecoder().decode(image);
+    }
+
+    protected abstract boolean canEncode(byte[] input, BufferedImage image);
+
+    protected abstract ImageWriter getImageWriter();
+
+    protected abstract ImageDecoder getImageDecoder();
 }

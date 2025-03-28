@@ -4,9 +4,10 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ImageDecoder {
-    private BufferedImage image;
-    private List<Byte> bytes;
+import static de.dhbw.karlsruhe.util.ByteHelper.toPrimitive;
+
+public class ImageDecoder implements Decoder {
+    private final List<Byte> bytes;
 
     private byte currentByte;
     private int bitCount;
@@ -23,9 +24,7 @@ public class ImageDecoder {
         this.numberOfBytesBitCount = 0;
     }
 
-    public Byte[] decode(BufferedImage image) {
-        this.image = image;
-
+    public byte[] decode(BufferedImage image) {
         for (int y = 0; y < image.getHeight(); y++) {
             for (int x = 0; x < image.getWidth(); x++) {
                 int color = image.getRGB(x, y);
@@ -38,13 +37,13 @@ public class ImageDecoder {
                     }
 
                     if (numberOfBytesBitCount == 32 && numberOfBytes == bytes.size()) {
-                        return bytes.toArray(new Byte[0]);
+                        return toPrimitive(bytes.toArray(new Byte[0]));
                     }
                 }
             }
         }
 
-        return bytes.toArray(new Byte[0]);
+        return toPrimitive(bytes.toArray(new Byte[0]));
     }
 
     private void pushOne() {

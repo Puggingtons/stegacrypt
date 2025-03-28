@@ -2,7 +2,7 @@ package de.dhbw.karlsruhe.steganography;
 
 import java.awt.image.BufferedImage;
 
-public class ImageWriter {
+public class ImageWriter implements Writer {
     private BufferedImage image;
 
     private int currentX;
