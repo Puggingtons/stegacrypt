@@ -8,8 +8,4 @@ public class ByteHelper {
         }
         return result;
     }
-
-    public static byte b(int i) {
-        return (byte) i;
-    }
 }
