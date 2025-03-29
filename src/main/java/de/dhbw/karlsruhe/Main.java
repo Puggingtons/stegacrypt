@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.IOException;
 import java.security.Security;
 
+import static de.dhbw.karlsruhe.util.ByteHelper.bytesToString;
 import static de.dhbw.karlsruhe.util.StringHelper.toFixedBinary;
 
 public class Main {
@@ -37,6 +38,9 @@ public class Main {
 
         printBytes(text);
         printBytes(decoded);
+
+        System.out.println(bytesToString(text));
+        System.out.println(bytesToString(decoded));
     }
 
     private static void setupSecurity() {
