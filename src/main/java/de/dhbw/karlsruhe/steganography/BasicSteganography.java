@@ -14,16 +14,31 @@ public class BasicSteganography extends Steganography {
 
     @Override
     public boolean canEncode(byte[] input, BufferedImage image) {
-        return input.length * 8 < image.getWidth() * image.getHeight();
+        return (headerSize() + encodedSize(input)) < maxSize(image);
     }
 
     @Override
-    protected ImageWriter getImageWriter() {
+    protected ImageWriter getWriter() {
         return imageWriter;
     }
 
     @Override
-    protected ImageDecoder getImageDecoder() {
+    protected ImageDecoder getDecoder() {
         return imageDecoder;
+    }
+
+    private int headerSize() {
+        // number of bits in an integer
+        return 32;
+    }
+
+    private int encodedSize(byte[] input) {
+        // number of bits in the input
+        return input.length * 8;
+    }
+
+    private int maxSize(BufferedImage image) {
+        // image size * 3 (for each color used)
+        return image.getWidth() * image.getHeight() * 3;
     }
 }

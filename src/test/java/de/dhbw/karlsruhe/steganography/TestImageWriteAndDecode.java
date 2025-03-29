@@ -19,12 +19,6 @@ public class TestImageWriteAndDecode {
         var writtenImage = writer.writeData(image, bytes);
         var decodedMessage = decoder.decode(writtenImage);
 
-        byte[] output = new byte[decodedMessage.length];
-
-        for (int i = 0; i < decodedMessage.length; i++) {
-            output[i] = decodedMessage[i];
-        }
-
-        assertArrayEquals(bytes, output);
+        assertArrayEquals(bytes, decodedMessage);
     }
 }

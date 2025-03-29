@@ -8,16 +8,16 @@ public abstract class Steganography {
             throw new IllegalArgumentException("input does not fit in the image");
         }
 
-        return getImageWriter().writeData(image, input);
+        return getWriter().writeData(image, input);
     }
 
     public byte[] decode(BufferedImage image) {
-        return getImageDecoder().decode(image);
+        return getDecoder().decode(image);
     }
 
     protected abstract boolean canEncode(byte[] input, BufferedImage image);
 
-    protected abstract ImageWriter getImageWriter();
+    protected abstract Writer getWriter();
 
-    protected abstract ImageDecoder getImageDecoder();
+    protected abstract Decoder getDecoder();
 }
