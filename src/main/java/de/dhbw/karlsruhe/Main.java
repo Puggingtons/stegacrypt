@@ -1,6 +1,6 @@
 package de.dhbw.karlsruhe;
 
-import de.dhbw.karlsruhe.steganography.BasicSteganography;
+import de.dhbw.karlsruhe.steganography.basic.BasicSteganography;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 import javax.imageio.ImageIO;

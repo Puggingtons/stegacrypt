@@ -1,5 +1,7 @@
 package de.dhbw.karlsruhe.steganography;
 
+import de.dhbw.karlsruhe.steganography.basic.BasicDecoder;
+import de.dhbw.karlsruhe.steganography.basic.BasicWriter;
 import org.junit.jupiter.api.Test;
 
 import java.awt.image.BufferedImage;

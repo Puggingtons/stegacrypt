@@ -1,4 +1,6 @@
-package de.dhbw.karlsruhe.steganography;
+package de.dhbw.karlsruhe.steganography.basic;
+
+import de.dhbw.karlsruhe.steganography.Writer;
 
 import java.awt.image.BufferedImage;
 
