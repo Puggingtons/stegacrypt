@@ -4,12 +4,12 @@ import java.awt.image.BufferedImage;
 
 public class BasicSteganography extends Steganography {
 
-    private final ImageWriter imageWriter;
-    private final ImageDecoder imageDecoder;
+    private final BasicWriter basicWriter;
+    private final BasicDecoder basicDecoder;
 
     public BasicSteganography() {
-        this.imageWriter = new ImageWriter();
-        this.imageDecoder = new ImageDecoder();
+        this.basicWriter = new BasicWriter();
+        this.basicDecoder = new BasicDecoder();
     }
 
     @Override
@@ -18,13 +18,13 @@ public class BasicSteganography extends Steganography {
     }
 
     @Override
-    protected ImageWriter getWriter() {
-        return imageWriter;
+    protected BasicWriter getWriter() {
+        return basicWriter;
     }
 
     @Override
-    protected ImageDecoder getDecoder() {
-        return imageDecoder;
+    protected BasicDecoder getDecoder() {
+        return basicDecoder;
     }
 
     private int headerSize() {

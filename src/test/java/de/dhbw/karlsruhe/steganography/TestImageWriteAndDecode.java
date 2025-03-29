@@ -13,8 +13,8 @@ public class TestImageWriteAndDecode {
         var image = new BufferedImage(64, 64, BufferedImage.TYPE_INT_ARGB);
         var bytes = "Hello World!".getBytes();
 
-        var writer = new ImageWriter();
-        var decoder = new ImageDecoder();
+        var writer = new BasicWriter();
+        var decoder = new BasicDecoder();
 
         var writtenImage = writer.writeData(image, bytes);
         var decodedMessage = decoder.decode(writtenImage);

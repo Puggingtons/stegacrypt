@@ -6,7 +6,7 @@ import java.util.List;
 
 import static de.dhbw.karlsruhe.util.ByteHelper.toPrimitive;
 
-public class ImageDecoder implements Decoder {
+public class BasicDecoder implements Decoder {
     private final List<Byte> bytes;
 
     private byte currentByte;
@@ -15,7 +15,7 @@ public class ImageDecoder implements Decoder {
     private int numberOfBytes;
     private int numberOfBytesBitCount;
 
-    public ImageDecoder() {
+    public BasicDecoder() {
         this.bytes = new ArrayList<>();
         this.currentByte = 0;
         this.bitCount = 0;
