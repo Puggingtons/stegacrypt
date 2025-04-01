@@ -1,17 +1,17 @@
 package de.dhbw.karlsruhe.steganography.basic;
 
-import de.dhbw.karlsruhe.steganography.Writer;
+import de.dhbw.karlsruhe.steganography.Encoder;
 
 import java.awt.image.BufferedImage;
 
-public class BasicWriter implements Writer {
+public class BasicEncoder implements Encoder {
     private BufferedImage image;
 
     private int currentX;
     private int currentY;
     private int currentColorOffset;
 
-    public BasicWriter() {
+    public BasicEncoder() {
         currentX = 0;
         currentY = 0;
         currentColorOffset = 0;
@@ -54,11 +54,13 @@ public class BasicWriter implements Writer {
     }
 
     private void writeOne() {
+        System.out.println("one");
         image.setRGB(currentX, currentY, image.getRGB(currentX, currentY) | currentBitMask());
         next();
     }
 
     private void writeZero() {
+        System.out.println("zero");
         image.setRGB(currentX, currentY, image.getRGB(currentX, currentY) & ~currentBitMask());
         next();
     }

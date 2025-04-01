@@ -1,7 +1,7 @@
 package de.dhbw.karlsruhe.steganography;
 
 import de.dhbw.karlsruhe.steganography.basic.BasicDecoder;
-import de.dhbw.karlsruhe.steganography.basic.BasicWriter;
+import de.dhbw.karlsruhe.steganography.basic.BasicEncoder;
 import org.junit.jupiter.api.Test;
 
 import java.awt.image.BufferedImage;
@@ -15,7 +15,7 @@ public class TestImageWriteAndDecode {
         var image = new BufferedImage(64, 64, BufferedImage.TYPE_INT_ARGB);
         var bytes = "Hello World!".getBytes();
 
-        var writer = new BasicWriter();
+        var writer = new BasicEncoder();
         var decoder = new BasicDecoder();
 
         var writtenImage = writer.writeData(image, bytes);

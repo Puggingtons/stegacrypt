@@ -6,11 +6,11 @@ import java.awt.image.BufferedImage;
 
 public class BasicSteganography extends Steganography {
 
-    private final BasicWriter basicWriter;
+    private final BasicEncoder basicWriter;
     private final BasicDecoder basicDecoder;
 
     public BasicSteganography() {
-        this.basicWriter = new BasicWriter();
+        this.basicWriter = new BasicEncoder();
         this.basicDecoder = new BasicDecoder();
     }
 
@@ -20,7 +20,7 @@ public class BasicSteganography extends Steganography {
     }
 
     @Override
-    protected BasicWriter getWriter() {
+    protected BasicEncoder getWriter() {
         return basicWriter;
     }
 

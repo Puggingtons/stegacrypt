@@ -1,24 +1,34 @@
 package de.dhbw.karlsruhe;
 
+import de.dhbw.karlsruhe.gui.StegaCryptGui;
 import de.dhbw.karlsruhe.steganography.basic.BasicSteganography;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.plaf.FontUIResource;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.security.Security;
+import java.util.Enumeration;
 
 import static de.dhbw.karlsruhe.util.ByteHelper.bytesToString;
 import static de.dhbw.karlsruhe.util.StringHelper.toFixedBinary;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
+        // System.setProperty("sun.java2d.uiScale.enabled", "true");
+        // System.setProperty("sun.java2d.uiScale", "1.5");
+        // System.setProperty("swing.aatext", "true");
+        // setFontSizeGlobal(20);
+
+
         setupSecurity();
 
         BufferedImage image = new BufferedImage(8, 8, BufferedImage.TYPE_INT_ARGB);
+        // BufferedImage image = ImageIO.read(new File("examples/lenna.png"));
 
         var text = "abcdef".getBytes();
 
@@ -41,6 +51,9 @@ public class Main {
 
         System.out.println(bytesToString(text));
         System.out.println(bytesToString(decoded));
+
+        StegaCryptGui gui = new StegaCryptGui();
+        gui.setVisible(true);
     }
 
     private static void setupSecurity() {
@@ -70,13 +83,12 @@ public class Main {
 
         img.flush();
 
-        ImageIcon icon = new ImageIcon(img);
-
         JFrame frame = new JFrame();
 
         frame.setLayout(new FlowLayout());
         frame.setSize(512, 512);
 
+        ImageIcon icon = new ImageIcon(img);
         JLabel lbl = new JLabel();
         lbl.setIcon(icon);
 
@@ -112,6 +124,17 @@ public class Main {
         for (int y = 0; y < img.getHeight(); y++) {
             for (int x = 0; x < img.getWidth(); x++) {
                 printPixel(img.getRGB(x, y));
+            }
+        }
+    }
+
+    public static void setFontSizeGlobal(int size) {
+        for (Enumeration<Object> e = UIManager.getDefaults().keys(); e.hasMoreElements(); ) {
+            Object key = e.nextElement();
+            Object value = UIManager.get(key);
+
+            if (value instanceof final Font f) {
+                UIManager.put(key, new FontUIResource(f.getName(), f.getStyle(), size));
             }
         }
     }

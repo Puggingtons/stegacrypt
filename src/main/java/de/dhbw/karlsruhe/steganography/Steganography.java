@@ -17,7 +17,7 @@ public abstract class Steganography {
 
     protected abstract boolean canEncode(byte[] input, BufferedImage image);
 
-    protected abstract Writer getWriter();
+    protected abstract Encoder getWriter();
 
     protected abstract Decoder getDecoder();
 }

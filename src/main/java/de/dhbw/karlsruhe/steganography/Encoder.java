@@ -2,6 +2,6 @@ package de.dhbw.karlsruhe.steganography;
 
 import java.awt.image.BufferedImage;
 
-public interface Writer {
+public interface Encoder {
     BufferedImage writeData(BufferedImage image, byte[] data);
 }
