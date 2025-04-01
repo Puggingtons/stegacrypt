@@ -3,9 +3,11 @@ package view.encode;
 import de.dhbw.karlsruhe.cryptography.Cryptography;
 import de.dhbw.karlsruhe.steganography.Steganography;
 import view.components.ImageDisplay;
+import view.components.VerticalTitledPanel;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -31,6 +33,13 @@ public class EncodeView extends JPanel {
 
         steganographySelect = new JComboBox<>();
         cryptographySelect = new JComboBox<>();
+
+        steganographySelect.addActionListener(_ -> {
+            this.onSteganographyChange((Steganography) steganographySelect.getSelectedItem());
+        });
+        cryptographySelect.addActionListener(_ -> {
+            this.onCryptographyChange((Cryptography) cryptographySelect.getSelectedItem());
+        });
 
         setupGui();
     }
@@ -72,39 +81,31 @@ public class EncodeView extends JPanel {
     }
 
     private void setupGui() {
-        setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+        setLayout(new BorderLayout());
 
-        setupInputs();
-        add(new JSeparator(SwingConstants.VERTICAL));
-        setupEncode();
+        add(createInputPanel(), BorderLayout.WEST);
+        add(createEncodePanel(), BorderLayout.CENTER);
+        add(createOutputPanel(), BorderLayout.EAST);
     }
 
-    private void setupInputs() {
-        JPanel inputPanel = new JPanel();
-        inputPanel.setBorder(BorderFactory.createTitledBorder("Input"));
-        inputPanel.setLayout(new BoxLayout(inputPanel, BoxLayout.Y_AXIS));
+    private JPanel createInputPanel() {
+        VerticalTitledPanel inputPanel = new VerticalTitledPanel("Input");
 
-        inputPanel.add(createInputButton("Bild auswählen...", this::onInputImageChange));
-        inputPanel.add(inputImageDisplay);
-        inputPanel.add(createInputButton("Datei auswählen...", this::onInputFileChange));
+        VerticalTitledPanel inputImagePanel = new VerticalTitledPanel("Input Image");
+        inputImagePanel.add(createInputButton("Choose image...", this::onInputImageChange));
+        inputImagePanel.add(inputImageDisplay);
+        inputPanel.add(inputImagePanel);
 
-        steganographySelect.addActionListener(_ -> {
-            this.onSteganographyChange((Steganography) steganographySelect.getSelectedItem());
-        });
-        inputPanel.add(steganographySelect);
+        VerticalTitledPanel inputFilePanel = new VerticalTitledPanel("Input file");
+        inputFilePanel.add(createInputButton("Choose file...", this::onInputFileChange));
+        inputFilePanel.add(Box.createHorizontalGlue());
+        inputPanel.add(inputFilePanel);
 
-        cryptographySelect.addActionListener(_ -> {
-            this.onCryptographyChange((Cryptography) cryptographySelect.getSelectedItem());
-        });
-        inputPanel.add(cryptographySelect);
-
-        add(inputPanel);
+        return inputPanel;
     }
 
-    private void setupEncode() {
-        JPanel encodePanel = new JPanel();
-        encodePanel.setBorder(BorderFactory.createTitledBorder("Encode"));
-        encodePanel.setLayout(new BoxLayout(encodePanel, BoxLayout.Y_AXIS));
+    private JPanel createEncodePanel() {
+        VerticalTitledPanel encodePanel = new VerticalTitledPanel("Encode");
 
         JButton encodeButton = new JButton("Encode");
         encodeButton.addActionListener(_ -> {
@@ -113,9 +114,28 @@ public class EncodeView extends JPanel {
             }
         });
 
+        steganographySelect.setMaximumSize(new Dimension(200, 25));
+        cryptographySelect.setMaximumSize(new Dimension(200, 25));
+
+        // encodePanel.add(Box.createVerticalGlue());
+        encodePanel.add(steganographySelect);
+        encodePanel.add(cryptographySelect);
+
         encodePanel.add(encodeButton);
 
-        add(encodePanel);
+        return encodePanel;
+    }
+
+    private JPanel createOutputPanel() {
+        VerticalTitledPanel outputPanel = new VerticalTitledPanel("Output");
+
+        outputPanel.add(outputImageDisplay);
+
+        JButton saveButton = new JButton("Save");
+        outputPanel.add(saveButton);
+
+        return outputPanel;
+
     }
 
     private JButton createInputButton(String buttonText, Consumer<File> onFileChange) {

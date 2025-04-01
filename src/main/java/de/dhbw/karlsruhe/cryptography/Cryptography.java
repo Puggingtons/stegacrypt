@@ -1,5 +1,8 @@
 package de.dhbw.karlsruhe.cryptography;
 
-public interface Cryptography {
-    byte[] encrypt(byte[] data);
+public abstract class Cryptography {
+    @Override
+    public abstract String toString();
+
+    public abstract byte[] encrypt(byte[] data);
 }

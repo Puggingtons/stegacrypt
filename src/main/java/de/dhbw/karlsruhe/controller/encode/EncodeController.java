@@ -25,13 +25,20 @@ public class EncodeController {
 
         try {
             byte[] data = Files.readAllBytes(model.getInputFile().toPath());
-            byte[] encryptedData = model.getCryptography().encrypt(data);
 
-            BufferedImage steganographicEncodedImage = model.getSteganography().encode(encryptedData, model.getInputImage());
+            if (model.getCryptography() != null) {
+                data = model.getCryptography().encrypt(data);
+            }
+
+            BufferedImage steganographicEncodedImage = model.getSteganography().encode(data, model.getInputImage());
             model.setOutputImage(steganographicEncodedImage);
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void saveImage() {
+
     }
 
     public void setInputImage(BufferedImage inputImage) {

@@ -26,7 +26,7 @@ public class ImageDisplay extends JLabel {
     }
 
     public ImageDisplay(BufferedImage image) {
-        this(image, 200, 200);
+        this(image, 400, 400);
     }
 
     public ImageDisplay(BufferedImage image, int maxWidth, int maxHeight) {

@@ -1,6 +1,5 @@
 package de.dhbw.karlsruhe;
 
-import de.dhbw.karlsruhe.steganography.basic.BasicSteganography;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import view.StegaCryptView;
 
@@ -14,7 +13,6 @@ import java.io.IOException;
 import java.security.Security;
 import java.util.Enumeration;
 
-import static de.dhbw.karlsruhe.util.ByteHelper.bytesToString;
 import static de.dhbw.karlsruhe.util.StringHelper.toFixedBinary;
 
 public class Main {
@@ -27,32 +25,33 @@ public class Main {
 
         setupSecurity();
 
-        BufferedImage image = new BufferedImage(8, 8, BufferedImage.TYPE_INT_ARGB);
-        // BufferedImage image = ImageIO.read(new File("examples/lenna.png"));
-
-        var text = "abcdef".getBytes();
-
-        BasicSteganography basicSteganography = new BasicSteganography();
-
-        System.out.println(basicSteganography.canEncode(text, image));
-
-        BufferedImage result = basicSteganography.encode(text, image);
-
-        byte[] decoded = basicSteganography.decode(result);
-
-        printBytes(text);
-        System.out.println();
-        printImage(result);
-
-        System.out.println("------------");
-
-        printBytes(text);
-        printBytes(decoded);
-
-        System.out.println(bytesToString(text));
-        System.out.println(bytesToString(decoded));
+        // BufferedImage image = new BufferedImage(8, 8, BufferedImage.TYPE_INT_ARGB);
+        // // BufferedImage image = ImageIO.read(new File("examples/lenna.png"));
+        //
+        // var text = "abcdef".getBytes();
+        //
+        // BasicSteganography basicSteganography = new BasicSteganography();
+        //
+        // System.out.println(basicSteganography.canEncode(text, image));
+        //
+        // BufferedImage result = basicSteganography.encode(text, image);
+        //
+        // byte[] decoded = basicSteganography.decode(result);
+        //
+        // printBytes(text);
+        // System.out.println();
+        // printImage(result);
+        //
+        // System.out.println("------------");
+        //
+        // printBytes(text);
+        // printBytes(decoded);
+        //
+        // System.out.println(bytesToString(text));
+        // System.out.println(bytesToString(decoded));
 
         StegaCryptView view = new StegaCryptView();
+        view.setLocationRelativeTo(null); // center on screen
         view.setVisible(true);
     }
 

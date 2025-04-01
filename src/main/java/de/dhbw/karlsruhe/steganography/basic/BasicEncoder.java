@@ -54,13 +54,11 @@ public class BasicEncoder implements Encoder {
     }
 
     private void writeOne() {
-        System.out.println("one");
         image.setRGB(currentX, currentY, image.getRGB(currentX, currentY) | currentBitMask());
         next();
     }
 
     private void writeZero() {
-        System.out.println("zero");
         image.setRGB(currentX, currentY, image.getRGB(currentX, currentY) & ~currentBitMask());
         next();
     }

@@ -2,6 +2,7 @@ package view;
 
 import de.dhbw.karlsruhe.controller.encode.EncodeController;
 import de.dhbw.karlsruhe.cryptography.Cryptography;
+import de.dhbw.karlsruhe.cryptography.NoCryptography;
 import de.dhbw.karlsruhe.model.encode.EncodeModel;
 import de.dhbw.karlsruhe.steganography.Steganography;
 import de.dhbw.karlsruhe.steganography.basic.BasicSteganography;
@@ -47,9 +48,13 @@ public class StegaCryptView extends JFrame {
         });
 
         // setup available steganographies and cryptographies
-        encodeController.addAvailableSteganography(new BasicSteganography());
-        encodeController.addAvailableSteganography(new BasicSteganography());
-        encodeController.addAvailableSteganography(new BasicSteganography());
+        Steganography basic = new BasicSteganography();
+        encodeController.addAvailableSteganography(basic);
+        encodeController.setSteganography(basic);
+
+        Cryptography noCrypt = new NoCryptography();
+        encodeController.addAvailableCryptography(noCrypt);
+        encodeController.setCryptography(noCrypt);
 
         tabs.addTab("Encode", encodeView);
     }

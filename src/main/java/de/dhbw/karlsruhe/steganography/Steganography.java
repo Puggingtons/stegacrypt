@@ -15,6 +15,9 @@ public abstract class Steganography {
         return getDecoder().decode(image);
     }
 
+    @Override
+    public abstract String toString();
+
     protected abstract boolean canEncode(byte[] input, BufferedImage image);
 
     protected abstract Encoder getWriter();
