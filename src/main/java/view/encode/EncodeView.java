@@ -25,7 +25,10 @@ public class EncodeView extends JPanel {
     private Consumer<Steganography> onSteganographyChangeConsumer;
     private Consumer<Cryptography> onCryptographyChangeConsumer;
 
+    private Consumer<File> onSaveFileChangeConsumer;
+
     private Runnable onEncodeRunnable;
+    private Runnable onSaveRunnable;
 
     public EncodeView() {
         inputImageDisplay = new ImageDisplay();
@@ -68,8 +71,16 @@ public class EncodeView extends JPanel {
         this.onInputFileChangeConsumer = onInputFileChangeConsumer;
     }
 
+    public void setOnSaveFileChangeConsumer(Consumer<File> onSaveFileChangeConsumer) {
+        this.onSaveFileChangeConsumer = onSaveFileChangeConsumer;
+    }
+
     public void setOnEncodeRunnable(Runnable onEncodeRunnable) {
         this.onEncodeRunnable = onEncodeRunnable;
+    }
+
+    public void setOnSaveRunnable(Runnable onSaveRunnable) {
+        this.onSaveRunnable = onSaveRunnable;
     }
 
     public void setOnSteganographyChangeConsumer(Consumer<Steganography> onSteganographyChangeConsumer) {
@@ -131,7 +142,13 @@ public class EncodeView extends JPanel {
 
         outputPanel.add(outputImageDisplay);
 
+        JButton saveFileButton = createInputButton("Choose save file...", this::onSaveFileChange);
+        outputPanel.add(saveFileButton);
+
         JButton saveButton = new JButton("Save");
+        saveButton.addActionListener(_ -> {
+            onSave();
+        });
         outputPanel.add(saveButton);
 
         return outputPanel;
@@ -179,6 +196,18 @@ public class EncodeView extends JPanel {
     private void onCryptographyChange(Cryptography cryptography) {
         if (onCryptographyChangeConsumer != null) {
             onCryptographyChangeConsumer.accept(cryptography);
+        }
+    }
+
+    private void onSaveFileChange(File file) {
+        if (onSaveFileChangeConsumer != null) {
+            onSaveFileChangeConsumer.accept(file);
+        }
+    }
+
+    private void onSave() {
+        if (onSaveRunnable != null) {
+            onSaveRunnable.run();
         }
     }
 }

@@ -4,6 +4,7 @@ import de.dhbw.karlsruhe.cryptography.Cryptography;
 import de.dhbw.karlsruhe.model.encode.EncodeModel;
 import de.dhbw.karlsruhe.steganography.Steganography;
 
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -38,6 +39,15 @@ public class EncodeController {
     }
 
     public void saveImage() {
+        if (model.getSaveFile() == null) {
+            return;
+        }
+
+        try {
+            ImageIO.write(model.getOutputImage(), "png", model.getSaveFile());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -63,5 +73,9 @@ public class EncodeController {
 
     public void addAvailableCryptography(Cryptography cryptography) {
         model.addAvailableCryptography(cryptography);
+    }
+
+    public void setSaveFile(File saveFile) {
+        model.setSaveFile(saveFile);
     }
 }
