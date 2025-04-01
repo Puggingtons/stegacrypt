@@ -20,6 +20,11 @@ public class BasicSteganography extends Steganography {
     }
 
     @Override
+    public String toString() {
+        return "Basic Steganography";
+    }
+
+    @Override
     protected BasicEncoder getWriter() {
         return basicWriter;
     }

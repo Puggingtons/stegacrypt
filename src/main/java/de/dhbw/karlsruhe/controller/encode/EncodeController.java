@@ -40,5 +40,14 @@ public class EncodeController {
     public void setCryptography(Cryptography cryptography) {
         model.setCryptography(cryptography);
     }
+    
+    public void addAvailableSteganography(Steganography steganography) {
+        model.addAvailableSteganography(steganography);
+    }
+
+    public void addAvailableCryptography(Cryptography cryptography) {
+        model.addAvailableCryptography(cryptography);
+    }
+
 
 }

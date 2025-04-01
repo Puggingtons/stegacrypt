@@ -1,5 +1,8 @@
 package view.encode;
 
+import de.dhbw.karlsruhe.cryptography.Cryptography;
+import de.dhbw.karlsruhe.steganography.Steganography;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.image.BufferedImage;
@@ -12,12 +15,18 @@ public class EncodeView extends JPanel {
     private final JLabel inputImageLabel;
     private final JLabel outputImageLabel;
 
-    private Consumer<BufferedImage> onInputImageChange;
-    private Consumer<File> onInputFileChange;
+    private final JComboBox<Steganography> steganographySelect;
+    private final JComboBox<Cryptography> cryptographySelect;
+
+    private Consumer<BufferedImage> onInputImageChangeConsumer;
+    private Consumer<File> onInputFileChangeConsumer;
 
     public EncodeView() {
         inputImageLabel = new JLabel();
         outputImageLabel = new JLabel();
+
+        steganographySelect = new JComboBox<>();
+        cryptographySelect = new JComboBox<>();
 
         setupGui();
     }
@@ -30,12 +39,20 @@ public class EncodeView extends JPanel {
         outputImageLabel.setIcon(new ImageIcon(outputImage));
     }
 
-    public void setOnInputImageChange(Consumer<BufferedImage> onInputImageChange) {
-        this.onInputImageChange = onInputImageChange;
+    public void setAvailableSteganographies(Steganography[] steganographies) {
+        steganographySelect.setModel(new DefaultComboBoxModel<>(steganographies));
     }
 
-    public void setOnInputFileChange(Consumer<File> onInputFileChange) {
-        this.onInputFileChange = onInputFileChange;
+    public void setAvailableCryptographies(Cryptography[] cryptographies) {
+        cryptographySelect.setModel(new DefaultComboBoxModel<>(cryptographies));
+    }
+
+    public void setOnInputImageChangeConsumer(Consumer<BufferedImage> onInputImageChangeConsumer) {
+        this.onInputImageChangeConsumer = onInputImageChangeConsumer;
+    }
+
+    public void setOnInputFileChangeConsumer(Consumer<File> onInputFileChangeConsumer) {
+        this.onInputFileChangeConsumer = onInputFileChangeConsumer;
     }
 
     private void setupGui() {
@@ -50,10 +67,11 @@ public class EncodeView extends JPanel {
         inputPanel.setLayout(new BoxLayout(inputPanel, BoxLayout.Y_AXIS));
 
         inputPanel.add(createInputButton("Bild auswählen...", this::onInputImageChange));
-
         inputPanel.add(inputImageLabel);
-        
         inputPanel.add(createInputButton("Datei auswählen...", this::onInputFileChange));
+
+        inputPanel.add(steganographySelect);
+        inputPanel.add(cryptographySelect);
 
         add(inputPanel);
     }
@@ -76,8 +94,8 @@ public class EncodeView extends JPanel {
         try {
             BufferedImage image = ImageIO.read(file);
 
-            if (onInputImageChange != null) {
-                onInputImageChange.accept(image);
+            if (onInputImageChangeConsumer != null) {
+                onInputImageChangeConsumer.accept(image);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -85,8 +103,8 @@ public class EncodeView extends JPanel {
     }
 
     private void onInputFileChange(File file) {
-        if (onInputFileChange != null) {
-            onInputFileChange.accept(file);
+        if (onInputFileChangeConsumer != null) {
+            onInputFileChangeConsumer.accept(file);
         }
     }
 }
