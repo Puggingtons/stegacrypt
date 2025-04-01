@@ -2,7 +2,7 @@ package de.dhbw.karlsruhe;
 
 import de.dhbw.karlsruhe.steganography.basic.BasicSteganography;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import view.encode.StegaCryptView;
+import view.StegaCryptView;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -52,8 +52,6 @@ public class Main {
         System.out.println(bytesToString(text));
         System.out.println(bytesToString(decoded));
 
-        // StegaCryptGui gui = new StegaCryptGui();
-        // gui.setVisible(true);
         StegaCryptView view = new StegaCryptView();
         view.setVisible(true);
     }

@@ -1,7 +1,8 @@
-package view.encode;
+package view;
 
 import de.dhbw.karlsruhe.controller.encode.EncodeController;
 import de.dhbw.karlsruhe.model.encode.EncodeModel;
+import view.encode.EncodeView;
 
 import javax.swing.*;
 
