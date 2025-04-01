@@ -34,7 +34,7 @@ public class ChangeObserver<T> {
         return value;
     }
 
-    private void notifyListeners() {
+    protected void notifyListeners() {
         listeners.forEach(listener -> listener.accept(value));
     }
 }
