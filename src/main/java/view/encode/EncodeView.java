@@ -2,19 +2,18 @@ package view.encode;
 
 import de.dhbw.karlsruhe.cryptography.Cryptography;
 import de.dhbw.karlsruhe.steganography.Steganography;
+import view.components.ImageDisplay;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.function.Consumer;
 
 public class EncodeView extends JPanel {
-
-    private final JLabel inputImageLabel;
-    private final JLabel outputImageLabel;
+    private final ImageDisplay inputImageDisplay;
+    private final ImageDisplay outputImageDisplay;
 
     private final JComboBox<Steganography> steganographySelect;
     private final JComboBox<Cryptography> cryptographySelect;
@@ -27,8 +26,8 @@ public class EncodeView extends JPanel {
     private Runnable onEncodeRunnable;
 
     public EncodeView() {
-        inputImageLabel = new JLabel();
-        outputImageLabel = new JLabel();
+        inputImageDisplay = new ImageDisplay();
+        outputImageDisplay = new ImageDisplay();
 
         steganographySelect = new JComboBox<>();
         cryptographySelect = new JComboBox<>();
@@ -37,11 +36,11 @@ public class EncodeView extends JPanel {
     }
 
     public void setInputImage(BufferedImage inputImage) {
-        inputImageLabel.setIcon(new ImageIcon(new ImageIcon(inputImage).getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH)));
+        inputImageDisplay.setImage(inputImage);
     }
 
     public void setOutputImage(BufferedImage outputImage) {
-        outputImageLabel.setIcon(new ImageIcon(new ImageIcon(outputImage).getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH)));
+        outputImageDisplay.setImage(outputImage);
     }
 
     public void setAvailableSteganographies(Steganography[] steganographies) {
@@ -86,7 +85,7 @@ public class EncodeView extends JPanel {
         inputPanel.setLayout(new BoxLayout(inputPanel, BoxLayout.Y_AXIS));
 
         inputPanel.add(createInputButton("Bild auswählen...", this::onInputImageChange));
-        inputPanel.add(inputImageLabel);
+        inputPanel.add(inputImageDisplay);
         inputPanel.add(createInputButton("Datei auswählen...", this::onInputFileChange));
 
         steganographySelect.addActionListener(_ -> {
