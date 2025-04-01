@@ -32,9 +32,13 @@ public class StegaCryptView extends JFrame {
         // view -> controller
         encodeView.setOnInputFileChangeConsumer(encodeController::setInputFile);
         encodeView.setOnInputImageChangeConsumer(encodeController::setInputImage);
+        encodeView.setOnEncodeRunnable(encodeController::encode);
+        encodeView.setOnSteganographyChangeConsumer(encodeController::setSteganography);
+        encodeView.setOnCryptographyChangeConsumer(encodeController::setCryptography);
 
         // model -> view
         encodeModel.onInputImageChange(encodeView::setInputImage);
+        encodeModel.onOutputImageChange(encodeView::setOutputImage);
         encodeModel.onAvailableSteganographiesChange((s) -> {
             encodeView.setAvailableSteganographies(s.toArray(new Steganography[0]));
         });
@@ -43,7 +47,9 @@ public class StegaCryptView extends JFrame {
         });
 
         // setup available steganographies and cryptographies
-        encodeModel.addAvailableSteganography(new BasicSteganography());
+        encodeController.addAvailableSteganography(new BasicSteganography());
+        encodeController.addAvailableSteganography(new BasicSteganography());
+        encodeController.addAvailableSteganography(new BasicSteganography());
 
         tabs.addTab("Encode", encodeView);
     }

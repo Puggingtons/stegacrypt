@@ -4,21 +4,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ListChangeObserver<T> extends ChangeObserver<List<T>> {
-    private final List<T> entries;
-
     public ListChangeObserver() {
-        entries = new ArrayList<>();
+        super();
+        value = new ArrayList<>();
     }
 
     public void add(T value) {
-        entries.add(value);
+        this.value.add(value);
 
-        set(entries);
+        notifyListeners();
     }
 
     public void remove(T value) {
-        entries.remove(value);
+        this.value.remove(value);
 
-        set(entries);
+        notifyListeners();
     }
 }

@@ -17,8 +17,8 @@ public class EncodeModel {
     private final ChangeObserver<Cryptography> cryptography;
     private final ChangeObserver<BufferedImage> outputImage;
 
-    private ListChangeObserver<Steganography> availableSteganographies;
-    private ListChangeObserver<Cryptography> availableCryptographies;
+    private final ListChangeObserver<Steganography> availableSteganographies;
+    private final ListChangeObserver<Cryptography> availableCryptographies;
 
     public EncodeModel() {
         inputImage = new ChangeObserver<>();

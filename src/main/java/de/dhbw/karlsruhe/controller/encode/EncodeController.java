@@ -17,12 +17,21 @@ public class EncodeController {
         this.model = model;
     }
 
-    public void encode() throws IOException {
-        byte[] data = Files.readAllBytes(model.getInputFile().toPath());
-        byte[] encryptedData = model.getCryptography().encrypt(data);
+    public void encode() {
+        System.out.println("Encoding:");
+        System.out.println(">          file: " + model.getInputFile());
+        System.out.println("> steganography: " + model.getSteganography());
+        System.out.println(">  cryptography: " + model.getCryptography());
 
-        BufferedImage steganographicEncodedImage = model.getSteganography().encode(encryptedData, model.getInputImage());
-        model.setOutputImage(steganographicEncodedImage);
+        try {
+            byte[] data = Files.readAllBytes(model.getInputFile().toPath());
+            byte[] encryptedData = model.getCryptography().encrypt(data);
+
+            BufferedImage steganographicEncodedImage = model.getSteganography().encode(encryptedData, model.getInputImage());
+            model.setOutputImage(steganographicEncodedImage);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void setInputImage(BufferedImage inputImage) {
@@ -40,7 +49,7 @@ public class EncodeController {
     public void setCryptography(Cryptography cryptography) {
         model.setCryptography(cryptography);
     }
-    
+
     public void addAvailableSteganography(Steganography steganography) {
         model.addAvailableSteganography(steganography);
     }
@@ -48,6 +57,4 @@ public class EncodeController {
     public void addAvailableCryptography(Cryptography cryptography) {
         model.addAvailableCryptography(cryptography);
     }
-
-
 }

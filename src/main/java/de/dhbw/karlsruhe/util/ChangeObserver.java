@@ -7,7 +7,7 @@ import java.util.function.Consumer;
 public class ChangeObserver<T> {
     private final List<Consumer<T>> listeners;
 
-    private T value;
+    protected T value;
 
     public ChangeObserver() {
         listeners = new ArrayList<>();
