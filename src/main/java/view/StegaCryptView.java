@@ -1,11 +1,14 @@
 package view;
 
+import de.dhbw.karlsruhe.controller.decode.DecodeController;
 import de.dhbw.karlsruhe.controller.encode.EncodeController;
 import de.dhbw.karlsruhe.cryptography.Cryptography;
 import de.dhbw.karlsruhe.cryptography.NoCryptography;
+import de.dhbw.karlsruhe.model.decode.DecodeModel;
 import de.dhbw.karlsruhe.model.encode.EncodeModel;
 import de.dhbw.karlsruhe.steganography.Steganography;
 import de.dhbw.karlsruhe.steganography.basic.BasicSteganography;
+import view.decode.DecodeView;
 import view.encode.EncodeView;
 
 import javax.swing.*;
@@ -20,12 +23,13 @@ public class StegaCryptView extends JFrame {
 
         tabs = new JTabbedPane();
 
-        setupEncodeTab();
+        tabs.addTab("Encode", setupEncodeTab());
+        tabs.addTab("Decode", setupDecodeTab());
 
         add(tabs);
     }
 
-    private void setupEncodeTab() {
+    private JPanel setupEncodeTab() {
         EncodeView encodeView = new EncodeView();
         EncodeModel encodeModel = new EncodeModel();
         EncodeController encodeController = new EncodeController(encodeModel);
@@ -42,7 +46,8 @@ public class StegaCryptView extends JFrame {
         encodeController.addAvailableCryptography(noCrypt);
         encodeController.setCryptography(noCrypt);
 
-        tabs.addTab("Encode", encodeView);
+
+        return encodeView;
     }
 
     private void connectViewAndController(EncodeView encodeView, EncodeController encodeController) {
@@ -68,5 +73,27 @@ public class StegaCryptView extends JFrame {
         encodeModel.onAvailableCryptographiesChange((s) -> {
             encodeView.setAvailableCryptographies(s.toArray(new Cryptography[0]));
         });
+    }
+
+    private JPanel setupDecodeTab() {
+        DecodeView decodeView = new DecodeView();
+        DecodeModel decodeModel = new DecodeModel();
+        DecodeController decodeController = new DecodeController(decodeModel);
+
+        // view -> controller
+        decodeView.setOnSteganographyChangeConsumer(decodeController::setSelectedSteganography);
+        decodeView.setOnCryptographyChangeConsumer(decodeController::setSelectedCryptography);
+        decodeView.setOnInputImageChangeConsumer(decodeController::setInputImage);
+
+        // model -> view
+        decodeModel.onInputImageChange(decodeView::setInputImage);
+        decodeModel.onAvailableSteganographiesChange((s) -> {
+            decodeView.setAvailableSteganographies(s.toArray(new Steganography[0]));
+        });
+        decodeModel.onAvailableCryptographiesChange((s) -> {
+            decodeView.setAvailableCryptographies(s.toArray(new Cryptography[0]));
+        });
+
+        return decodeView;
     }
 }

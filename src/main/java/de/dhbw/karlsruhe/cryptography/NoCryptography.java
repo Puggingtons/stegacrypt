@@ -10,4 +10,8 @@ public class NoCryptography extends Cryptography {
     public byte[] encrypt(byte[] data) {
         return data;
     }
+
+    public byte[] decrypt(byte[] data) {
+        return data;
+    }
 }
