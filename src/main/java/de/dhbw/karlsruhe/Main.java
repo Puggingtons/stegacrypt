@@ -1,5 +1,7 @@
 package de.dhbw.karlsruhe;
 
+import de.dhbw.karlsruhe.steganography.Steganography;
+import de.dhbw.karlsruhe.steganography.basic.BasicSteganography;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import view.StegaCryptView;
 
@@ -10,9 +12,13 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.security.Security;
 import java.util.Enumeration;
 
+import static de.dhbw.karlsruhe.util.BufferedImageHelper.delta;
+import static de.dhbw.karlsruhe.util.ByteHelper.bytesToString;
 import static de.dhbw.karlsruhe.util.StringHelper.toFixedBinary;
 
 public class Main {
@@ -53,10 +59,36 @@ public class Main {
         StegaCryptView view = new StegaCryptView();
         view.setLocationRelativeTo(null); // center on screen
         view.setVisible(true);
+        // dingus();
+        // decodeDings();
     }
 
     private static void setupSecurity() {
         Security.addProvider(new BouncyCastleProvider());
+    }
+
+    private static void decodeDings() throws IOException {
+        Steganography dings = new BasicSteganography();
+
+        System.out.println(bytesToString(dings.decode(ImageIO.read(new File("examples/dings.png")))));
+    }
+
+    private static void dingus() throws IOException {
+        var input = ImageIO.read(new File("examples/1000x1000.png"));
+        var fileInput = Files.readAllBytes(Paths.get("examples/test.txt"));
+
+        var steganography = new BasicSteganography();
+        var output = steganography.encode(fileInput, input);
+
+        System.out.println(bytesToString(steganography.decode(output)));
+
+        ImageIO.write(output, "png", new File("examples/dings.png"));
+
+        var original = ImageIO.read(new File("examples/1000x1000.png"));
+        var encoded = ImageIO.read(new File("examples/dings.png"));
+        var delta = delta(original, encoded);
+
+        ImageIO.write(delta, "png", new File("examples/delta.png"));
     }
 
     private static void dings() throws IOException {

@@ -30,27 +30,8 @@ public class StegaCryptView extends JFrame {
         EncodeModel encodeModel = new EncodeModel();
         EncodeController encodeController = new EncodeController(encodeModel);
 
-        // view -> controller
-        encodeView.setOnInputFileChangeConsumer(encodeController::setInputFile);
-        encodeView.setOnInputImageChangeConsumer(encodeController::setInputImage);
-
-        encodeView.setOnSteganographyChangeConsumer(encodeController::setSteganography);
-        encodeView.setOnCryptographyChangeConsumer(encodeController::setCryptography);
-
-        encodeView.setOnEncodeRunnable(encodeController::encode);
-        
-        encodeView.setOnSaveFileChangeConsumer(encodeController::setSaveFile);
-        encodeView.setOnSaveRunnable(encodeController::saveImage);
-
-        // model -> view
-        encodeModel.onInputImageChange(encodeView::setInputImage);
-        encodeModel.onOutputImageChange(encodeView::setOutputImage);
-        encodeModel.onAvailableSteganographiesChange((s) -> {
-            encodeView.setAvailableSteganographies(s.toArray(new Steganography[0]));
-        });
-        encodeModel.onAvailableCryptographiesChange((s) -> {
-            encodeView.setAvailableCryptographies(s.toArray(new Cryptography[0]));
-        });
+        connectViewAndController(encodeView, encodeController);
+        connectModelAndView(encodeModel, encodeView);
 
         // setup available steganographies and cryptographies
         Steganography basic = new BasicSteganography();
@@ -62,5 +43,30 @@ public class StegaCryptView extends JFrame {
         encodeController.setCryptography(noCrypt);
 
         tabs.addTab("Encode", encodeView);
+    }
+
+    private void connectViewAndController(EncodeView encodeView, EncodeController encodeController) {
+        encodeView.setOnInputFileChangeConsumer(encodeController::setInputFile);
+        encodeView.setOnInputImageChangeConsumer(encodeController::setInputImage);
+
+        encodeView.setOnSteganographyChangeConsumer(encodeController::setSteganography);
+        encodeView.setOnCryptographyChangeConsumer(encodeController::setCryptography);
+
+        encodeView.setOnEncodeRunnable(encodeController::encode);
+
+        encodeView.setOnSaveFileChangeConsumer(encodeController::setSaveFile);
+        encodeView.setOnSaveRunnable(encodeController::saveImage);
+    }
+
+    private void connectModelAndView(EncodeModel encodeModel, EncodeView encodeView) {
+        encodeModel.onInputImageChange(encodeView::setInputImage);
+        encodeModel.onOutputImageChange(encodeView::setOutputImage);
+        encodeModel.onDeltaImageChange(encodeView::setDeltaImage);
+        encodeModel.onAvailableSteganographiesChange((s) -> {
+            encodeView.setAvailableSteganographies(s.toArray(new Steganography[0]));
+        });
+        encodeModel.onAvailableCryptographiesChange((s) -> {
+            encodeView.setAvailableCryptographies(s.toArray(new Cryptography[0]));
+        });
     }
 }

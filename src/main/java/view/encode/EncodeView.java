@@ -2,6 +2,7 @@ package view.encode;
 
 import de.dhbw.karlsruhe.cryptography.Cryptography;
 import de.dhbw.karlsruhe.steganography.Steganography;
+import view.components.FileInputButton;
 import view.components.ImageDisplay;
 import view.components.VerticalTitledPanel;
 
@@ -16,6 +17,7 @@ import java.util.function.Consumer;
 public class EncodeView extends JPanel {
     private final ImageDisplay inputImageDisplay;
     private final ImageDisplay outputImageDisplay;
+    private final ImageDisplay deltaImageDisplay;
 
     private final JComboBox<Steganography> steganographySelect;
     private final JComboBox<Cryptography> cryptographySelect;
@@ -33,6 +35,7 @@ public class EncodeView extends JPanel {
     public EncodeView() {
         inputImageDisplay = new ImageDisplay();
         outputImageDisplay = new ImageDisplay();
+        deltaImageDisplay = new ImageDisplay();
 
         steganographySelect = new JComboBox<>();
         cryptographySelect = new JComboBox<>();
@@ -53,6 +56,10 @@ public class EncodeView extends JPanel {
 
     public void setOutputImage(BufferedImage outputImage) {
         outputImageDisplay.setImage(outputImage);
+    }
+
+    public void setDeltaImage(BufferedImage deltaImage) {
+        deltaImageDisplay.setImage(deltaImage);
     }
 
     public void setAvailableSteganographies(Steganography[] steganographies) {
@@ -103,12 +110,12 @@ public class EncodeView extends JPanel {
         VerticalTitledPanel inputPanel = new VerticalTitledPanel("Input");
 
         VerticalTitledPanel inputImagePanel = new VerticalTitledPanel("Input Image");
-        inputImagePanel.add(createInputButton("Choose image...", this::onInputImageChange));
+        inputImagePanel.add(new FileInputButton("Choose image...", this::onInputImageChange));
         inputImagePanel.add(inputImageDisplay);
         inputPanel.add(inputImagePanel);
 
         VerticalTitledPanel inputFilePanel = new VerticalTitledPanel("Input file");
-        inputFilePanel.add(createInputButton("Choose file...", this::onInputFileChange));
+        inputFilePanel.add(new FileInputButton("Choose file...", this::onInputFileChange));
         inputFilePanel.add(Box.createHorizontalGlue());
         inputPanel.add(inputFilePanel);
 
@@ -141,9 +148,7 @@ public class EncodeView extends JPanel {
         VerticalTitledPanel outputPanel = new VerticalTitledPanel("Output");
 
         outputPanel.add(outputImageDisplay);
-
-        JButton saveFileButton = createInputButton("Choose save file...", this::onSaveFileChange);
-        outputPanel.add(saveFileButton);
+        outputPanel.add(new FileInputButton("Choose save file...", this::onSaveFileChange));
 
         JButton saveButton = new JButton("Save");
         saveButton.addActionListener(_ -> {
@@ -151,22 +156,10 @@ public class EncodeView extends JPanel {
         });
         outputPanel.add(saveButton);
 
+        outputPanel.add(deltaImageDisplay);
+
         return outputPanel;
 
-    }
-
-    private JButton createInputButton(String buttonText, Consumer<File> onFileChange) {
-        JFileChooser imageChooser = new JFileChooser("examples/");
-        JButton selectImageButton = new JButton(buttonText);
-
-        selectImageButton.addActionListener(_ -> {
-            int returnVal = imageChooser.showOpenDialog(this);
-            if (returnVal == JFileChooser.APPROVE_OPTION) {
-                onFileChange.accept(imageChooser.getSelectedFile());
-            }
-        });
-
-        return selectImageButton;
     }
 
     private void onInputImageChange(File file) {

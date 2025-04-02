@@ -4,6 +4,8 @@ import de.dhbw.karlsruhe.steganography.Encoder;
 
 import java.awt.image.BufferedImage;
 
+import static de.dhbw.karlsruhe.util.BufferedImageHelper.deepCopy;
+
 public class BasicEncoder implements Encoder {
     private BufferedImage image;
 
@@ -18,7 +20,8 @@ public class BasicEncoder implements Encoder {
     }
 
     public BufferedImage writeData(BufferedImage image, byte[] data) {
-        this.image = image;
+        this.image = deepCopy(image);
+
         writeNumberOfBytes(data);
         writeDataBytes(data);
 

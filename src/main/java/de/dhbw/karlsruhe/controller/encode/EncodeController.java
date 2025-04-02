@@ -10,6 +10,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 
+import static de.dhbw.karlsruhe.util.BufferedImageHelper.delta;
+
 public class EncodeController {
 
     private final EncodeModel model;
@@ -33,6 +35,8 @@ public class EncodeController {
 
             BufferedImage steganographicEncodedImage = model.getSteganography().encode(data, model.getInputImage());
             model.setOutputImage(steganographicEncodedImage);
+
+            model.setDeltaImage(delta(model.getInputImage(), model.getOutputImage()));
         } catch (IOException e) {
             e.printStackTrace();
         }

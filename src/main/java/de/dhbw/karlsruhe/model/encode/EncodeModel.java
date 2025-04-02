@@ -17,6 +17,7 @@ public class EncodeModel {
     private final ChangeObserver<Cryptography> cryptography;
     private final ChangeObserver<BufferedImage> outputImage;
     private final ChangeObserver<File> saveFile;
+    private final ChangeObserver<BufferedImage> deltaImage;
 
     private final ListChangeObserver<Steganography> availableSteganographies;
     private final ListChangeObserver<Cryptography> availableCryptographies;
@@ -28,6 +29,7 @@ public class EncodeModel {
         cryptography = new ChangeObserver<>();
         outputImage = new ChangeObserver<>();
         saveFile = new ChangeObserver<>();
+        deltaImage = new ChangeObserver<>();
 
         availableSteganographies = new ListChangeObserver<>();
         availableCryptographies = new ListChangeObserver<>();
@@ -63,6 +65,10 @@ public class EncodeModel {
 
     public void onAvailableCryptographiesChange(Consumer<List<Cryptography>> onAvailableCryptographiesChange) {
         availableCryptographies.subscribe(onAvailableCryptographiesChange);
+    }
+
+    public void onDeltaImageChange(Consumer<BufferedImage> onDeltaImageChange) {
+        deltaImage.subscribe(onDeltaImageChange);
     }
 
     public BufferedImage getInputImage() {
@@ -127,6 +133,14 @@ public class EncodeModel {
 
     public void setSaveFile(File file) {
         saveFile.set(file);
+    }
+
+    public BufferedImage getDeltaImage() {
+        return deltaImage.get();
+    }
+
+    public void setDeltaImage(BufferedImage image) {
+        deltaImage.set(image);
     }
 
 }
