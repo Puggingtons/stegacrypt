@@ -2,6 +2,7 @@ package view.encode;
 
 import de.dhbw.karlsruhe.cryptography.Cryptography;
 import de.dhbw.karlsruhe.steganography.Steganography;
+import view.components.AlgorithmSelect;
 import view.components.FileInputButton;
 import view.components.ImageDisplay;
 import view.components.VerticalTitledPanel;
@@ -19,8 +20,8 @@ public class EncodeView extends JPanel {
     private final ImageDisplay outputImageDisplay;
     private final ImageDisplay deltaImageDisplay;
 
-    private final JComboBox<Steganography> steganographySelect;
-    private final JComboBox<Cryptography> cryptographySelect;
+    private final AlgorithmSelect<Steganography> steganographySelect;
+    private final AlgorithmSelect<Cryptography> cryptographySelect;
 
     private Consumer<BufferedImage> onInputImageChangeConsumer;
     private Consumer<File> onInputFileChangeConsumer;
@@ -37,15 +38,8 @@ public class EncodeView extends JPanel {
         outputImageDisplay = new ImageDisplay();
         deltaImageDisplay = new ImageDisplay();
 
-        steganographySelect = new JComboBox<>();
-        cryptographySelect = new JComboBox<>();
-
-        steganographySelect.addActionListener(_ -> {
-            this.onSteganographyChange((Steganography) steganographySelect.getSelectedItem());
-        });
-        cryptographySelect.addActionListener(_ -> {
-            this.onCryptographyChange((Cryptography) cryptographySelect.getSelectedItem());
-        });
+        steganographySelect = new AlgorithmSelect<>(this::onSteganographyChange);
+        cryptographySelect = new AlgorithmSelect<>(this::onCryptographyChange);
 
         setupGui();
     }
@@ -131,9 +125,6 @@ public class EncodeView extends JPanel {
                 onEncodeRunnable.run();
             }
         });
-
-        steganographySelect.setMaximumSize(new Dimension(200, 25));
-        cryptographySelect.setMaximumSize(new Dimension(200, 25));
 
         // encodePanel.add(Box.createVerticalGlue());
         encodePanel.add(steganographySelect);

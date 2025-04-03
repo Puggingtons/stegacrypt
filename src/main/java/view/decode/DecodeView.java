@@ -2,6 +2,7 @@ package view.decode;
 
 import de.dhbw.karlsruhe.cryptography.Cryptography;
 import de.dhbw.karlsruhe.steganography.Steganography;
+import view.components.AlgorithmSelect;
 import view.components.FileInputButton;
 import view.components.ImageDisplay;
 import view.components.VerticalTitledPanel;
@@ -18,8 +19,8 @@ public class DecodeView extends JPanel {
 
     private final ImageDisplay inputImageDisplay;
 
-    private final JComboBox<Steganography> steganographySelect;
-    private final JComboBox<Cryptography> cryptographySelect;
+    private final AlgorithmSelect<Steganography> steganographySelect;
+    private final AlgorithmSelect<Cryptography> cryptographySelect;
 
     private Consumer<Steganography> onSteganographyChangeConsumer;
     private Consumer<Cryptography> onCryptographyChangeConsumer;
@@ -29,17 +30,9 @@ public class DecodeView extends JPanel {
     public DecodeView() {
         inputImageDisplay = new ImageDisplay();
 
-        steganographySelect = new JComboBox<>();
-        cryptographySelect = new JComboBox<>();
-
-        steganographySelect.addActionListener(_ -> {
-            this.onSteganographyChange((Steganography) steganographySelect.getSelectedItem());
-        });
-
-        cryptographySelect.addActionListener(_ -> {
-            this.onCryptographyChange((Cryptography) cryptographySelect.getSelectedItem());
-        });
-
+        steganographySelect = new AlgorithmSelect<>(this::onSteganographyChange);
+        cryptographySelect = new AlgorithmSelect<>(this::onCryptographyChange);
+        
         setupGui();
     }
 

@@ -43,4 +43,12 @@ public class DecodeController {
     public void setSelectedCryptography(Cryptography cryptography) {
         model.setSelectedCryptography(cryptography);
     }
+
+    public void addAvailableSteganography(Steganography availableSteganography) {
+        model.addAvailableSteganography(availableSteganography);
+    }
+
+    public void addAvailableCryptography(Cryptography cryptography) {
+        model.addAvailableCryptography(cryptography);
+    }
 }
