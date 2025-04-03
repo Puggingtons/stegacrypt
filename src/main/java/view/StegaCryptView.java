@@ -16,10 +16,16 @@ import javax.swing.*;
 public class StegaCryptView extends JFrame {
     private final JTabbedPane tabs;
 
+    private Steganography[] steganographies;
+    private Cryptography[] cryptographies;
+
     public StegaCryptView() {
         setTitle("Stega Crypt");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1000, 700);
+
+        steganographies = new Steganography[]{new BasicSteganography()};
+        cryptographies = new Cryptography[]{new NoCryptography()};
 
         tabs = new JTabbedPane();
 
@@ -34,23 +40,21 @@ public class StegaCryptView extends JFrame {
         EncodeModel encodeModel = new EncodeModel();
         EncodeController encodeController = new EncodeController(encodeModel);
 
-        connectViewAndController(encodeView, encodeController);
-        connectModelAndView(encodeModel, encodeView);
+        connectEncodeViewAndController(encodeView, encodeController);
+        connectEncodeModelAndView(encodeModel, encodeView);
 
         // setup available steganographies and cryptographies
-        Steganography basic = new BasicSteganography();
-        encodeController.addAvailableSteganography(basic);
-        encodeController.setSteganography(basic);
+        encodeController.addAvailableSteganography(steganographies[0]);
+        encodeController.setSteganography(steganographies[0]);
 
-        Cryptography noCrypt = new NoCryptography();
-        encodeController.addAvailableCryptography(noCrypt);
-        encodeController.setCryptography(noCrypt);
+        encodeController.addAvailableCryptography(cryptographies[0]);
+        encodeController.setCryptography(cryptographies[0]);
 
 
         return encodeView;
     }
 
-    private void connectViewAndController(EncodeView encodeView, EncodeController encodeController) {
+    private void connectEncodeViewAndController(EncodeView encodeView, EncodeController encodeController) {
         encodeView.setOnInputFileChangeConsumer(encodeController::setInputFile);
         encodeView.setOnInputImageChangeConsumer(encodeController::setInputImage);
 
@@ -63,7 +67,7 @@ public class StegaCryptView extends JFrame {
         encodeView.setOnSaveRunnable(encodeController::saveImage);
     }
 
-    private void connectModelAndView(EncodeModel encodeModel, EncodeView encodeView) {
+    private void connectEncodeModelAndView(EncodeModel encodeModel, EncodeView encodeView) {
         encodeModel.onInputImageChange(encodeView::setInputImage);
         encodeModel.onOutputImageChange(encodeView::setOutputImage);
         encodeModel.onDeltaImageChange(encodeView::setDeltaImage);
@@ -80,12 +84,26 @@ public class StegaCryptView extends JFrame {
         DecodeModel decodeModel = new DecodeModel();
         DecodeController decodeController = new DecodeController(decodeModel);
 
-        // view -> controller
+        connectDecodeViewAndController(decodeView, decodeController);
+        connectDecodeModelAndView(decodeModel, decodeView);
+
+        decodeController.addAvailableSteganography(steganographies[0]);
+        decodeController.setSelectedSteganography(steganographies[0]);
+
+        decodeController.addAvailableCryptography(cryptographies[0]);
+        decodeController.setSelectedCryptography(cryptographies[0]);
+
+
+        return decodeView;
+    }
+
+    private void connectDecodeViewAndController(DecodeView decodeView, DecodeController decodeController) {
         decodeView.setOnSteganographyChangeConsumer(decodeController::setSelectedSteganography);
         decodeView.setOnCryptographyChangeConsumer(decodeController::setSelectedCryptography);
         decodeView.setOnInputImageChangeConsumer(decodeController::setInputImage);
+    }
 
-        // model -> view
+    private void connectDecodeModelAndView(DecodeModel decodeModel, DecodeView decodeView) {
         decodeModel.onInputImageChange(decodeView::setInputImage);
         decodeModel.onAvailableSteganographiesChange((s) -> {
             decodeView.setAvailableSteganographies(s.toArray(new Steganography[0]));
@@ -93,7 +111,5 @@ public class StegaCryptView extends JFrame {
         decodeModel.onAvailableCryptographiesChange((s) -> {
             decodeView.setAvailableCryptographies(s.toArray(new Cryptography[0]));
         });
-
-        return decodeView;
     }
 }
