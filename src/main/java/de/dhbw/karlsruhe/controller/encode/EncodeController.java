@@ -8,9 +8,9 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 
 import static de.dhbw.karlsruhe.util.BufferedImageHelper.delta;
+import static de.dhbw.karlsruhe.util.FileHelper.readFileWithExtension;
 
 public class EncodeController {
 
@@ -27,7 +27,7 @@ public class EncodeController {
         System.out.println(">  cryptography: " + model.getCryptography());
 
         try {
-            byte[] data = Files.readAllBytes(model.getInputFile().toPath());
+            byte[] data = readFileWithExtension(model.getInputFile());
 
             if (model.getCryptography() != null) {
                 data = model.getCryptography().encrypt(data);
