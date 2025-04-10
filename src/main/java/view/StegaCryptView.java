@@ -101,6 +101,7 @@ public class StegaCryptView extends JFrame {
         decodeView.setOnSteganographyChangeConsumer(decodeController::setSelectedSteganography);
         decodeView.setOnCryptographyChangeConsumer(decodeController::setSelectedCryptography);
         decodeView.setOnInputImageChangeConsumer(decodeController::setInputImage);
+        decodeView.setOnDecodeRunnable(decodeController::decode);
     }
 
     private void connectDecodeModelAndView(DecodeModel decodeModel, DecodeView decodeView) {
@@ -111,5 +112,6 @@ public class StegaCryptView extends JFrame {
         decodeModel.onAvailableCryptographiesChange((s) -> {
             decodeView.setAvailableCryptographies(s.toArray(new Cryptography[0]));
         });
+        decodeModel.onOutputDataChange(decodeView::setOutput);
     }
 }

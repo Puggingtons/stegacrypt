@@ -2,6 +2,7 @@ package view.decode;
 
 import de.dhbw.karlsruhe.cryptography.Cryptography;
 import de.dhbw.karlsruhe.steganography.Steganography;
+import de.dhbw.karlsruhe.util.FileHelper;
 import view.components.AlgorithmSelect;
 import view.components.FileInputButton;
 import view.components.ImageDisplay;
@@ -15,24 +16,28 @@ import java.io.File;
 import java.io.IOException;
 import java.util.function.Consumer;
 
+import static de.dhbw.karlsruhe.util.ByteHelper.bytesToString;
+
 public class DecodeView extends JPanel {
 
     private final ImageDisplay inputImageDisplay;
-
     private final AlgorithmSelect<Steganography> steganographySelect;
     private final AlgorithmSelect<Cryptography> cryptographySelect;
+    private final JPanel outputPanel;
 
     private Consumer<Steganography> onSteganographyChangeConsumer;
     private Consumer<Cryptography> onCryptographyChangeConsumer;
-
     private Consumer<BufferedImage> onInputImageChangeConsumer;
+
+    private Runnable onDecodeRunnable;
 
     public DecodeView() {
         inputImageDisplay = new ImageDisplay();
+        outputPanel = new VerticalTitledPanel("Output");
 
         steganographySelect = new AlgorithmSelect<>(this::onSteganographyChange);
         cryptographySelect = new AlgorithmSelect<>(this::onCryptographyChange);
-        
+
         setupGui();
     }
 
@@ -60,10 +65,31 @@ public class DecodeView extends JPanel {
         inputImageDisplay.setImage(image);
     }
 
+    public void setOnDecodeRunnable(Runnable onDecodeRunnable) {
+        this.onDecodeRunnable = onDecodeRunnable;
+    }
+
+    public void setOutput(byte[] bytes) {
+        outputPanel.removeAll();
+
+        String extension = FileHelper.getExtension(bytes);
+
+        if (extension.equals("txt")) {
+            JTextArea textArea = new JTextArea(bytesToString(FileHelper.getData(bytes)));
+            textArea.setEditable(false);
+            textArea.setLineWrap(true);
+            outputPanel.add(new JScrollPane(textArea));
+
+            revalidate();
+            repaint();
+        }
+    }
+
     private void setupGui() {
         setLayout(new BorderLayout());
 
         add(createInputPanel(), BorderLayout.WEST);
+        add(outputPanel, BorderLayout.CENTER);
     }
 
     private JPanel createInputPanel() {
@@ -74,6 +100,15 @@ public class DecodeView extends JPanel {
 
         inputPanel.add(steganographySelect);
         inputPanel.add(cryptographySelect);
+
+        JButton encodeButton = new JButton("Decode");
+        encodeButton.addActionListener(_ -> {
+            if (onDecodeRunnable != null) {
+                onDecodeRunnable.run();
+            }
+        });
+
+        inputPanel.add(encodeButton);
 
         return inputPanel;
     }
