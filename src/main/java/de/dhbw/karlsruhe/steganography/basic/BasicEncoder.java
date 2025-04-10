@@ -6,7 +6,13 @@ import java.awt.image.BufferedImage;
 
 import static de.dhbw.karlsruhe.util.BufferedImageHelper.deepCopy;
 
+// 1 byte         4 byte            # bytes
+// <algorithm id> <number of bytes> <bytes of data>
+
 public class BasicEncoder implements Encoder {
+
+    public final byte ALGORITHM_ID = 1;
+
     private BufferedImage image;
 
     private int currentX;
@@ -22,37 +28,44 @@ public class BasicEncoder implements Encoder {
     public BufferedImage writeData(BufferedImage image, byte[] data) {
         this.image = deepCopy(image);
 
+        // writeAlgorithmId();
+
         writeNumberOfBytes(data);
         writeDataBytes(data);
 
         return this.image;
     }
 
-    private void writeNumberOfBytes(byte[] data) {
-        int numberOfBytes = data.length;
+    private void writeAlgorithmId() {
+        writeByte(ALGORITHM_ID);
+    }
 
-        for (int i = 0; i < 32; i++) {
-            if (((numberOfBytes >> 31) & 1) == 1) {
+    private void writeNumberOfBytes(byte[] data) {
+        writeInt(data.length);
+    }
+
+    private void writeDataBytes(byte[] data) {
+        for (byte b : data) {
+            writeByte(b);
+        }
+    }
+
+    private void writeInt(int i) {
+        writeByte((byte) (i >> 24));
+        writeByte((byte) (i >> 16));
+        writeByte((byte) (i >> 8));
+        writeByte((byte) i);
+    }
+
+    private void writeByte(byte b) {
+        for (int i = 0; i < 8; i++) {
+            if ((b & 128) == 128) {
                 writeOne();
             } else {
                 writeZero();
             }
 
-            numberOfBytes = numberOfBytes << 1;
-        }
-    }
-
-    private void writeDataBytes(byte[] data) {
-        for (byte b : data) {
-            for (int i = 0; i < 8; i++) {
-                if ((b & 128) == 128) {
-                    writeOne();
-                } else {
-                    writeZero();
-                }
-
-                b = (byte) (b << 1);
-            }
+            b = (byte) (b << 1);
         }
     }
 
