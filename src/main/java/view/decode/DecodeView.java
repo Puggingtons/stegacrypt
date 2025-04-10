@@ -12,6 +12,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.function.Consumer;
@@ -74,15 +75,30 @@ public class DecodeView extends JPanel {
 
         String extension = FileHelper.getExtension(bytes);
 
-        if (extension.equals("txt")) {
-            JTextArea textArea = new JTextArea(bytesToString(FileHelper.getData(bytes)));
-            textArea.setEditable(false);
-            textArea.setLineWrap(true);
-            outputPanel.add(new JScrollPane(textArea));
+        switch (extension) {
+            case "txt":
+                JTextArea textArea = new JTextArea(bytesToString(FileHelper.getData(bytes)));
+                textArea.setEditable(false);
+                textArea.setLineWrap(true);
+                outputPanel.add(new JScrollPane(textArea));
+                break;
+            case "jpg":
+            case "jpeg":
+            case "gif":
+            case "bmp":
+            case "png":
+                ImageDisplay imageDisplay = new ImageDisplay();
+                try {
+                    imageDisplay.setImage(ImageIO.read(new ByteArrayInputStream(FileHelper.getData(bytes))));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                outputPanel.add(imageDisplay);
+                break;
 
-            revalidate();
-            repaint();
         }
+
+        outputPanel.revalidate();
     }
 
     private void setupGui() {
