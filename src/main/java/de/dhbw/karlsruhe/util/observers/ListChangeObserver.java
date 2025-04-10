@@ -1,4 +1,4 @@
-package de.dhbw.karlsruhe.util;
+package de.dhbw.karlsruhe.util.observers;
 
 import java.util.ArrayList;
 import java.util.List;

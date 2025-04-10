@@ -2,8 +2,8 @@ package de.dhbw.karlsruhe.model.decode;
 
 import de.dhbw.karlsruhe.cryptography.Cryptography;
 import de.dhbw.karlsruhe.steganography.Steganography;
-import de.dhbw.karlsruhe.util.ChangeObserver;
-import de.dhbw.karlsruhe.util.ListChangeObserver;
+import de.dhbw.karlsruhe.util.observers.ChangeObserver;
+import de.dhbw.karlsruhe.util.observers.ListChangeObserver;
 
 import java.awt.image.BufferedImage;
 import java.util.List;
