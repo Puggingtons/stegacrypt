@@ -6,6 +6,7 @@ import de.dhbw.karlsruhe.util.observers.ChangeObserver;
 import de.dhbw.karlsruhe.util.observers.ListChangeObserver;
 
 import java.awt.image.BufferedImage;
+import java.security.Key;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -13,6 +14,8 @@ public class DecodeModel {
 
     private final ChangeObserver<BufferedImage> inputImage;
     private final ChangeObserver<byte[]> outputData;
+
+    private final ChangeObserver<Key> key;
 
     private final ListChangeObserver<Steganography> availableSteganographies;
     private final ListChangeObserver<Cryptography> availableCryptographies;
@@ -23,6 +26,8 @@ public class DecodeModel {
     public DecodeModel() {
         this.inputImage = new ChangeObserver<>();
         this.outputData = new ChangeObserver<>();
+
+        this.key = new ChangeObserver<>();
 
         this.availableSteganographies = new ListChangeObserver<>();
         this.availableCryptographies = new ListChangeObserver<>();
@@ -53,6 +58,18 @@ public class DecodeModel {
 
     public void onOutputDataChange(Consumer<byte[]> onOutputDataChange) {
         outputData.subscribe(onOutputDataChange);
+    }
+
+    public Key getKey() {
+        return key.get();
+    }
+
+    public void setKey(Key key) {
+        this.key.set(key);
+    }
+
+    public void onKeyChange(Consumer<Key> onKeyChange) {
+        key.subscribe(onKeyChange);
     }
 
     public List<Steganography> getAvailableSteganographies() {

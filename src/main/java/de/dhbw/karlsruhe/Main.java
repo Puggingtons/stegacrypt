@@ -2,8 +2,8 @@ package de.dhbw.karlsruhe;
 
 import de.dhbw.karlsruhe.steganography.Steganography;
 import de.dhbw.karlsruhe.steganography.basic.BasicSteganography;
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import de.dhbw.karlsruhe.view.StegaCryptView;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;

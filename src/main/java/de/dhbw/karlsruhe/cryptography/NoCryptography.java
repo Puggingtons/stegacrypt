@@ -1,5 +1,7 @@
 package de.dhbw.karlsruhe.cryptography;
 
+import java.security.Key;
+
 public class NoCryptography extends Cryptography {
     @Override
     public String toString() {
@@ -7,11 +9,11 @@ public class NoCryptography extends Cryptography {
     }
 
     @Override
-    public byte[] encrypt(byte[] data) {
+    public byte[] encrypt(byte[] data, Key key) {
         return data;
     }
 
-    public byte[] decrypt(byte[] data) {
+    public byte[] decrypt(byte[] data, Key key) {
         return data;
     }
 }

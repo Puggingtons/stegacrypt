@@ -7,6 +7,7 @@ import de.dhbw.karlsruhe.util.observers.ListChangeObserver;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.security.Key;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -19,6 +20,8 @@ public class EncodeModel {
     private final ChangeObserver<File> saveFile;
     private final ChangeObserver<BufferedImage> deltaImage;
 
+    private final ChangeObserver<Key> key;
+
     private final ListChangeObserver<Steganography> availableSteganographies;
     private final ListChangeObserver<Cryptography> availableCryptographies;
 
@@ -30,6 +33,8 @@ public class EncodeModel {
         outputImage = new ChangeObserver<>();
         saveFile = new ChangeObserver<>();
         deltaImage = new ChangeObserver<>();
+
+        key = new ChangeObserver<>();
 
         availableSteganographies = new ListChangeObserver<>();
         availableCryptographies = new ListChangeObserver<>();
@@ -141,6 +146,18 @@ public class EncodeModel {
 
     public void setDeltaImage(BufferedImage image) {
         deltaImage.set(image);
+    }
+
+    public Key getKey() {
+        return key.get();
+    }
+
+    public void setKey(Key key) {
+        this.key.set(key);
+    }
+
+    public void onKeyChange(Consumer<Key> onKeyChange) {
+        key.subscribe(onKeyChange);
     }
 
 }

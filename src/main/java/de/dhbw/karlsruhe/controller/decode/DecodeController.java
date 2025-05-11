@@ -26,7 +26,11 @@ public class DecodeController {
         byte[] decoded = steg.decode(model.getInputImage());
 
         if (crypt != null) {
-            decoded = crypt.decrypt(decoded);
+            try {
+                decoded = crypt.decrypt(decoded, model.getKey());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         model.setOutputData(decoded);
