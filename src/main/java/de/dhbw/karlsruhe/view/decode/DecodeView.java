@@ -1,12 +1,12 @@
-package view.decode;
+package de.dhbw.karlsruhe.view.decode;
 
 import de.dhbw.karlsruhe.cryptography.Cryptography;
 import de.dhbw.karlsruhe.steganography.Steganography;
 import de.dhbw.karlsruhe.util.FileHelper;
-import view.components.AlgorithmSelect;
-import view.components.FileInputButton;
-import view.components.ImageDisplay;
-import view.components.VerticalTitledPanel;
+import de.dhbw.karlsruhe.view.components.AlgorithmSelect;
+import de.dhbw.karlsruhe.view.components.FileInputButton;
+import de.dhbw.karlsruhe.view.components.ImageDisplay;
+import de.dhbw.karlsruhe.view.components.VerticalTitledPanel;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -77,6 +77,7 @@ public class DecodeView extends JPanel {
 
         switch (extension) {
             case "txt":
+                System.out.println("creating text area");
                 JTextArea textArea = new JTextArea(bytesToString(FileHelper.getData(bytes)));
                 textArea.setEditable(false);
                 textArea.setLineWrap(true);
@@ -87,6 +88,7 @@ public class DecodeView extends JPanel {
             case "gif":
             case "bmp":
             case "png":
+                System.out.println("creating image display");
                 ImageDisplay imageDisplay = new ImageDisplay();
                 try {
                     imageDisplay.setImage(ImageIO.read(new ByteArrayInputStream(FileHelper.getData(bytes))));
@@ -95,7 +97,8 @@ public class DecodeView extends JPanel {
                 }
                 outputPanel.add(imageDisplay);
                 break;
-
+            default:
+                System.out.println("extension not found!");
         }
 
         outputPanel.revalidate();

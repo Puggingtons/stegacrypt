@@ -1,4 +1,4 @@
-package view.components;
+package de.dhbw.karlsruhe.view.components;
 
 import javax.swing.*;
 

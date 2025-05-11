@@ -1,4 +1,4 @@
-package view;
+package de.dhbw.karlsruhe.view;
 
 import de.dhbw.karlsruhe.controller.decode.DecodeController;
 import de.dhbw.karlsruhe.controller.encode.EncodeController;
@@ -8,8 +8,8 @@ import de.dhbw.karlsruhe.model.decode.DecodeModel;
 import de.dhbw.karlsruhe.model.encode.EncodeModel;
 import de.dhbw.karlsruhe.steganography.Steganography;
 import de.dhbw.karlsruhe.steganography.basic.BasicSteganography;
-import view.decode.DecodeView;
-import view.encode.EncodeView;
+import de.dhbw.karlsruhe.view.decode.DecodeView;
+import de.dhbw.karlsruhe.view.encode.EncodeView;
 
 import javax.swing.*;
 

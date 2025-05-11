@@ -1,11 +1,11 @@
-package view.encode;
+package de.dhbw.karlsruhe.view.encode;
 
 import de.dhbw.karlsruhe.cryptography.Cryptography;
 import de.dhbw.karlsruhe.steganography.Steganography;
-import view.components.AlgorithmSelect;
-import view.components.FileInputButton;
-import view.components.ImageDisplay;
-import view.components.VerticalTitledPanel;
+import de.dhbw.karlsruhe.view.components.AlgorithmSelect;
+import de.dhbw.karlsruhe.view.components.FileInputButton;
+import de.dhbw.karlsruhe.view.components.ImageDisplay;
+import de.dhbw.karlsruhe.view.components.VerticalTitledPanel;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
