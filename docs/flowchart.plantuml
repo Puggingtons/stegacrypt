@@ -1,5 +1,4 @@
 @startuml
-
 file "Dokument" as doc
 file "Bild" as img_start
 file "Bild" as img_end
@@ -27,11 +26,12 @@ key -up-> cryptography
 key -left-* keydatabase
 key -right- keyexchange
 
-package Qualitätsanalyse {
+package Qualitätsanalyse as quality_analysis {
     action "Steganographische Qualität" as steganographic_quality
     action "Kryptographische Qualität" as cryptographic_quality
 }
 
 img_end -right-> steganographic_quality
 img_end -right-> cryptographic_quality
+'img_end -right-> quality_analysis
 @enduml
