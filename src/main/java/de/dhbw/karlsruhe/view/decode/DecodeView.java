@@ -29,6 +29,7 @@ public class DecodeView extends JPanel {
     private Consumer<Steganography> onSteganographyChangeConsumer;
     private Consumer<Cryptography> onCryptographyChangeConsumer;
     private Consumer<BufferedImage> onInputImageChangeConsumer;
+    private Consumer<File> onPrivateKeyFileChangeConsumer;
 
     private Runnable onDecodeRunnable;
 
@@ -60,6 +61,10 @@ public class DecodeView extends JPanel {
 
     public void setOnInputImageChangeConsumer(Consumer<BufferedImage> onInputImageChangeConsumer) {
         this.onInputImageChangeConsumer = onInputImageChangeConsumer;
+    }
+
+    public void setOnPrivateKeyFileChangeConsumer(Consumer<File> onPrivateKeyFileChangeConsumer) {
+        this.onPrivateKeyFileChangeConsumer = onPrivateKeyFileChangeConsumer;
     }
 
     public void setInputImage(BufferedImage image) {
@@ -120,6 +125,8 @@ public class DecodeView extends JPanel {
         inputPanel.add(steganographySelect);
         inputPanel.add(cryptographySelect);
 
+        inputPanel.add(new FileInputButton("Choose encryption key", this::onPrivateKeyFileChangeConsumerChange, "keys/"));
+
         JButton encodeButton = new JButton("Decode");
         encodeButton.addActionListener(_ -> {
             if (onDecodeRunnable != null) {
@@ -153,6 +160,12 @@ public class DecodeView extends JPanel {
     private void onCryptographyChange(Cryptography cryptography) {
         if (onCryptographyChangeConsumer != null) {
             onCryptographyChangeConsumer.accept(cryptography);
+        }
+    }
+
+    private void onPrivateKeyFileChangeConsumerChange(File file) {
+        if (onPrivateKeyFileChangeConsumer != null) {
+            onPrivateKeyFileChangeConsumer.accept(file);
         }
     }
 }

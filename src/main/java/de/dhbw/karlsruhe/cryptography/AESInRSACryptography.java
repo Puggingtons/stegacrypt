@@ -7,6 +7,8 @@ import java.security.Key;
 
 public class AESInRSACryptography extends Cryptography {
 
+    // https://stackoverflow.com/questions/57161198/encrypt-and-decrypt-data-in-java-with-aes-rsa
+
     private final AESCryptography aesCryptography;
     private final RSACryptography rsaCryptography;
 

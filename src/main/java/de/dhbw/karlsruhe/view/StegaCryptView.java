@@ -3,9 +3,7 @@ package de.dhbw.karlsruhe.view;
 import de.dhbw.karlsruhe.controller.decode.DecodeController;
 import de.dhbw.karlsruhe.controller.encode.EncodeController;
 import de.dhbw.karlsruhe.controller.keygen.KeygenController;
-import de.dhbw.karlsruhe.cryptography.Cryptography;
-import de.dhbw.karlsruhe.cryptography.NoCryptography;
-import de.dhbw.karlsruhe.cryptography.RSACryptography;
+import de.dhbw.karlsruhe.cryptography.*;
 import de.dhbw.karlsruhe.model.decode.DecodeModel;
 import de.dhbw.karlsruhe.model.encode.EncodeModel;
 import de.dhbw.karlsruhe.model.keygen.KeygenModel;
@@ -30,7 +28,7 @@ public class StegaCryptView extends JFrame {
         setSize(1000, 700);
 
         steganographies = new Steganography[]{new LSBSteganography(), new StegaCryptSteganography()};
-        cryptographies = new Cryptography[]{new NoCryptography(), new RSACryptography()};
+        cryptographies = new Cryptography[]{new NoCryptography(), new RSACryptography(), new AESInRSACryptography(), new AESCryptography()};
 
         tabs = new JTabbedPane();
 
@@ -118,6 +116,7 @@ public class StegaCryptView extends JFrame {
         decodeView.setOnCryptographyChangeConsumer(decodeController::setSelectedCryptography);
         decodeView.setOnInputImageChangeConsumer(decodeController::setInputImage);
         decodeView.setOnDecodeRunnable(decodeController::decode);
+        decodeView.setOnPrivateKeyFileChangeConsumer(decodeController::setPrivateKeyFromFile);
     }
 
     private void connectDecodeModelAndView(DecodeModel decodeModel, DecodeView decodeView) {

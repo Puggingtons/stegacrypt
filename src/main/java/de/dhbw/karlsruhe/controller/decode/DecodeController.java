@@ -2,9 +2,11 @@ package de.dhbw.karlsruhe.controller.decode;
 
 import de.dhbw.karlsruhe.cryptography.Cryptography;
 import de.dhbw.karlsruhe.model.decode.DecodeModel;
+import de.dhbw.karlsruhe.security.RSAKeyHandler;
 import de.dhbw.karlsruhe.steganography.Steganography;
 
 import java.awt.image.BufferedImage;
+import java.io.File;
 
 public class DecodeController {
 
@@ -54,5 +56,13 @@ public class DecodeController {
 
     public void addAvailableCryptography(Cryptography cryptography) {
         model.addAvailableCryptography(cryptography);
+    }
+
+    public void setPrivateKeyFromFile(File keyFile) {
+        try {
+            model.setKey(RSAKeyHandler.loadPrivateKeyFromFile(keyFile));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
