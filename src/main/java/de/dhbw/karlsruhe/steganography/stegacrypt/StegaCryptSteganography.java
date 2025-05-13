@@ -14,7 +14,6 @@ public class StegaCryptSteganography extends Steganography {
     private final int bitDepth;
 
     public StegaCryptSteganography() {
-
         bitDepth = 2;
 
         this.decoder = new StegaCryptDecoder();

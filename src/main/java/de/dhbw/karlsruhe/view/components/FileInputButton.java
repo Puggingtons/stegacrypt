@@ -5,11 +5,19 @@ import java.io.File;
 import java.util.function.Consumer;
 
 public class FileInputButton extends JPanel {
+
+    protected JFileChooser imageChooser;
+
+
     public FileInputButton(String buttonText, Consumer<File> onFileChange) {
+        this(buttonText, onFileChange, "examples/");
+    }
+
+    public FileInputButton(String buttonText, Consumer<File> onFileChange, String initialPath) {
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 
         JButton selectImageButton = new JButton(buttonText);
-        JFileChooser imageChooser = new JFileChooser("examples/");
+        imageChooser = new JFileChooser(initialPath);
         JLabel selectedFileLabel = new JLabel();
 
         selectImageButton.addActionListener(_ -> {

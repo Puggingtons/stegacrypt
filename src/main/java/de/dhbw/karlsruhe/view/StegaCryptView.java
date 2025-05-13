@@ -2,16 +2,19 @@ package de.dhbw.karlsruhe.view;
 
 import de.dhbw.karlsruhe.controller.decode.DecodeController;
 import de.dhbw.karlsruhe.controller.encode.EncodeController;
+import de.dhbw.karlsruhe.controller.keygen.KeygenController;
 import de.dhbw.karlsruhe.cryptography.Cryptography;
 import de.dhbw.karlsruhe.cryptography.NoCryptography;
 import de.dhbw.karlsruhe.cryptography.RSACryptography;
 import de.dhbw.karlsruhe.model.decode.DecodeModel;
 import de.dhbw.karlsruhe.model.encode.EncodeModel;
+import de.dhbw.karlsruhe.model.keygen.KeygenModel;
 import de.dhbw.karlsruhe.steganography.Steganography;
 import de.dhbw.karlsruhe.steganography.basic.LSBSteganography;
 import de.dhbw.karlsruhe.steganography.stegacrypt.StegaCryptSteganography;
 import de.dhbw.karlsruhe.view.decode.DecodeView;
 import de.dhbw.karlsruhe.view.encode.EncodeView;
+import de.dhbw.karlsruhe.view.keygen.KeygenView;
 
 import javax.swing.*;
 
@@ -33,6 +36,7 @@ public class StegaCryptView extends JFrame {
 
         tabs.addTab("Encode", setupEncodeTab());
         tabs.addTab("Decode", setupDecodeTab());
+        tabs.addTab("KeyGen", setupKeygenTab());
 
         add(tabs);
     }
@@ -123,5 +127,26 @@ public class StegaCryptView extends JFrame {
             decodeView.setAvailableCryptographies(s.toArray(new Cryptography[0]));
         });
         decodeModel.onOutputDataChange(decodeView::setOutput);
+    }
+
+    private JPanel setupKeygenTab() {
+        KeygenView keygenView = new KeygenView();
+        KeygenModel keygenModel = new KeygenModel();
+        KeygenController keygenController = new KeygenController(keygenModel);
+
+        connectKeyGenViewAndController(keygenView, keygenController);
+        connectKeygenModelAndView(keygenModel, keygenView);
+
+        return keygenView;
+    }
+
+    private void connectKeyGenViewAndController(KeygenView keygenView, KeygenController keygenController) {
+        keygenView.setOnGenerateRunnable(keygenController::generateAndSaveKeyPair);
+        keygenView.setOnKeyNameChangeConsumer(keygenController::setKeyName);
+        keygenView.setOnSaveFileDirectoryChangeConsumer(keygenController::setSaveFileDirectory);
+    }
+
+    private void connectKeygenModelAndView(KeygenModel keygenModel, KeygenView keygenView) {
+
     }
 }
