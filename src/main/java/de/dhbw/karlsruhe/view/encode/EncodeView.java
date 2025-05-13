@@ -28,6 +28,8 @@ public class EncodeView extends JPanel {
     private Consumer<Steganography> onSteganographyChangeConsumer;
     private Consumer<Cryptography> onCryptographyChangeConsumer;
 
+    private Consumer<File> onPublicKeyFileChangeConsumer;
+
     private Consumer<File> onSaveFileChangeConsumer;
 
     private Runnable onEncodeRunnable;
@@ -92,6 +94,10 @@ public class EncodeView extends JPanel {
         this.onCryptographyChangeConsumer = onCryptographyChangeConsumer;
     }
 
+    public void setOnPublicKeyFileChangeConsumer(Consumer<File> onPublicKeyFileChangeConsumer) {
+        this.onPublicKeyFileChangeConsumer = onPublicKeyFileChangeConsumer;
+    }
+
     private void setupGui() {
         setLayout(new BorderLayout());
 
@@ -126,9 +132,13 @@ public class EncodeView extends JPanel {
             }
         });
 
+        FileInputButton publicKeyFileChooserButton = new FileInputButton("Choose encryption key", this::onPublicKeyFileChange, "keys/");
+
         // encodePanel.add(Box.createVerticalGlue());
         encodePanel.add(steganographySelect);
         encodePanel.add(cryptographySelect);
+
+        encodePanel.add(publicKeyFileChooserButton);
 
         encodePanel.add(encodeButton);
 
@@ -192,6 +202,12 @@ public class EncodeView extends JPanel {
     private void onSave() {
         if (onSaveRunnable != null) {
             onSaveRunnable.run();
+        }
+    }
+
+    private void onPublicKeyFileChange(File file) {
+        if (onPublicKeyFileChangeConsumer != null) {
+            onPublicKeyFileChangeConsumer.accept(file);
         }
     }
 }

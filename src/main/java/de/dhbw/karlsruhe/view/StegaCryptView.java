@@ -75,6 +75,8 @@ public class StegaCryptView extends JFrame {
 
         encodeView.setOnSaveFileChangeConsumer(encodeController::setSaveFile);
         encodeView.setOnSaveRunnable(encodeController::saveImage);
+
+        encodeView.setOnPublicKeyFileChangeConsumer(encodeController::setPublicKeyFromFile);
     }
 
     private void connectEncodeModelAndView(EncodeModel encodeModel, EncodeView encodeView) {

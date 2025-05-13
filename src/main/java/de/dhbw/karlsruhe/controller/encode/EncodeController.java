@@ -2,6 +2,7 @@ package de.dhbw.karlsruhe.controller.encode;
 
 import de.dhbw.karlsruhe.cryptography.Cryptography;
 import de.dhbw.karlsruhe.model.encode.EncodeModel;
+import de.dhbw.karlsruhe.security.RSAKeyHandler;
 import de.dhbw.karlsruhe.steganography.Steganography;
 
 import javax.imageio.ImageIO;
@@ -81,5 +82,13 @@ public class EncodeController {
 
     public void setSaveFile(File saveFile) {
         model.setSaveFile(saveFile);
+    }
+
+    public void setPublicKeyFromFile(File keyFile) {
+        try {
+            model.setKey(RSAKeyHandler.loadPublicKeyFromFile(keyFile));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

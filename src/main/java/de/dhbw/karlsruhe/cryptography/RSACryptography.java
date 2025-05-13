@@ -22,6 +22,8 @@ public class RSACryptography extends Cryptography {
         return kg.generateKeyPair();
     }
 
+    public RSACryptography() {
+    }
 
     @Override
     public String toString() {
@@ -30,29 +32,21 @@ public class RSACryptography extends Cryptography {
 
     @Override
     public byte[] encrypt(byte[] data, Key key) throws Exception {
-        byte[] cipherText = null;
+        Cipher rsaCipher = getCipher();
+        rsaCipher.init(Cipher.ENCRYPT_MODE, key);
 
-        Cipher cipher = getCipher();
-        cipher.init(Cipher.ENCRYPT_MODE, key);
-
-        cipherText = cipher.doFinal(data);
-
-        return cipherText;
+        return rsaCipher.doFinal(data);
     }
 
     @Override
     public byte[] decrypt(byte[] data, Key key) throws Exception {
-        byte[] dectyptedText = null;
+        Cipher rsaCipher = getCipher();
+        rsaCipher.init(Cipher.DECRYPT_MODE, key);
 
-        Cipher cipher = getCipher();
-        cipher.init(Cipher.DECRYPT_MODE, key);
-
-        dectyptedText = cipher.doFinal(data);
-
-        return dectyptedText;
+        return rsaCipher.doFinal(data);
     }
 
     private Cipher getCipher() throws Exception {
-        return Cipher.getInstance("RSA/ECB/PKCS1Padding");
+        return Cipher.getInstance("RSA");
     }
 }
