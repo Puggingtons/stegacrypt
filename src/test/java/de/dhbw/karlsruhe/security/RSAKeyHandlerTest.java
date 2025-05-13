@@ -11,11 +11,12 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.PrivateKey;
+import java.security.PublicKey;
 import java.security.Security;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class PrivateKeyHandlerTest {
+public class RSAKeyHandlerTest {
 
     @BeforeAll
     public static void setUp() throws Exception {
@@ -28,15 +29,29 @@ public class PrivateKeyHandlerTest {
 
         try {
             PrivateKey pk = RSACryptography.generateKeyPair().getPrivate();
-            PrivateKeyHandler.saveKeyToFile(pk, tmpFile);
+            RSAKeyHandler.saveKeyToFile(pk, tmpFile);
 
             System.out.println(Files.readString(tmpFile.toPath()));
 
-            PrivateKey loadedPk = PrivateKeyHandler.loadKeyFromFile(tmpFile);
+            PrivateKey loadedPk = RSAKeyHandler.loadPrivateKeyFromFile(tmpFile);
 
             assertEquals(pk, loadedPk);
         } catch (Exception e) {
             Assertions.fail(e.getMessage());
         }
+    }
+
+    @Test
+    public void itSavesAndLoadsPublicKey(@TempDir Path tmpDir) throws Exception {
+        File tmpFile = Path.of("test.pub").toFile();
+
+        PublicKey publicKey = RSACryptography.generateKeyPair().getPublic();
+
+        RSAKeyHandler.saveKeyToFile(publicKey, tmpFile);
+        PublicKey loaded = RSAKeyHandler.loadPublicKeyFromFile(tmpFile);
+
+        System.out.println(Files.readString(tmpFile.toPath()));
+
+        assertEquals(publicKey, loaded);
     }
 }
