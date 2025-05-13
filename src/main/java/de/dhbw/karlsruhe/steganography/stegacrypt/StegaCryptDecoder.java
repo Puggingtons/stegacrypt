@@ -1,6 +1,7 @@
-package de.dhbw.karlsruhe.steganography.basic;
+package de.dhbw.karlsruhe.steganography.stegacrypt;
 
 import de.dhbw.karlsruhe.steganography.Decoder;
+import de.dhbw.karlsruhe.util.IntHelper;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -8,7 +9,8 @@ import java.util.List;
 
 import static de.dhbw.karlsruhe.util.ByteHelper.toPrimitive;
 
-public class BasicDecoder implements Decoder {
+public class StegaCryptDecoder implements Decoder {
+
     private final List<Byte> bytes;
 
     private byte currentByte;
@@ -17,7 +19,7 @@ public class BasicDecoder implements Decoder {
     private int numberOfBytes;
     private int numberOfBytesBitCount;
 
-    public BasicDecoder() {
+    public StegaCryptDecoder() {
         this.bytes = new ArrayList<>();
         this.currentByte = 0;
         this.bitCount = 0;
@@ -26,22 +28,23 @@ public class BasicDecoder implements Decoder {
         this.numberOfBytesBitCount = 0;
     }
 
+    @Override
     public byte[] decode(BufferedImage image) {
         for (int y = 0; y < image.getHeight(); y++) {
             for (int x = 0; x < image.getWidth(); x++) {
-                int color = image.getRGB(x, y);
+                int color = image.getRGB(x, y) & 0xffffff;
 
-                for (int colorOffset = 0; colorOffset < 3; colorOffset++) {
-                    if ((color & currentBitMask(colorOffset)) != 0) {
-                        pushOne();
-                    } else {
-                        pushZero();
-                    }
 
-                    if (numberOfBytesBitCount == 32 && numberOfBytes == bytes.size()) {
-                        return toPrimitive(bytes.toArray(new Byte[0]));
-                    }
+                if ((IntHelper.countSetBits(color) % 2) == 0) {
+                    pushOne();
+                } else {
+                    pushZero();
                 }
+
+                if (numberOfBytesBitCount == 32 && numberOfBytes == bytes.size()) {
+                    return toPrimitive(bytes.toArray(new Byte[0]));
+                }
+
             }
         }
 

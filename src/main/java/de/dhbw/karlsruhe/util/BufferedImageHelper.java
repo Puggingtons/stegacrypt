@@ -33,9 +33,22 @@ public class BufferedImageHelper {
     }
 
     public static void printDelta(BufferedImage first, BufferedImage second) {
-        for (int y = 0; y < 100; y++) {
-            for (int x = 0; x < 100; x++) {
+        for (int y = 0; y < Math.min(100, first.getHeight()); y++) {
+            for (int x = 0; x < Math.min(100, first.getWidth()); x++) {
                 if (first.getRGB(x, y) == second.getRGB(x, y)) {
+                    System.out.print(" ");
+                } else {
+                    System.out.print("#");
+                }
+            }
+            System.out.println();
+        }
+    }
+
+    public static void printNonBlack(BufferedImage image) {
+        for (int y = 0; y < image.getHeight(); y++) {
+            for (int x = 0; x < image.getWidth(); x++) {
+                if (image.getRGB(x, y) == 0) {
                     System.out.print(" ");
                 } else {
                     System.out.print("#");

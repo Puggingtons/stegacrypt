@@ -1,17 +1,19 @@
 package de.dhbw.karlsruhe.steganography.basic;
 
+import de.dhbw.karlsruhe.steganography.Decoder;
+import de.dhbw.karlsruhe.steganography.Encoder;
 import de.dhbw.karlsruhe.steganography.Steganography;
 
 import java.awt.image.BufferedImage;
 
-public class BasicSteganography extends Steganography {
+public class LSBSteganography extends Steganography {
 
-    private final BasicEncoder basicWriter;
-    private final BasicDecoder basicDecoder;
+    private final LSBEncoder lsbWriter;
+    private final LSBDecoder lsbDecoder;
 
-    public BasicSteganography() {
-        this.basicWriter = new BasicEncoder();
-        this.basicDecoder = new BasicDecoder();
+    public LSBSteganography() {
+        this.lsbWriter = new LSBEncoder();
+        this.lsbDecoder = new LSBDecoder();
     }
 
     @Override
@@ -21,17 +23,17 @@ public class BasicSteganography extends Steganography {
 
     @Override
     public String toString() {
-        return "Basic Steganography";
+        return "LSB Steganography";
     }
 
     @Override
-    protected BasicEncoder getWriter() {
-        return basicWriter;
+    protected Encoder getWriter() {
+        return lsbWriter;
     }
 
     @Override
-    protected BasicDecoder getDecoder() {
-        return basicDecoder;
+    protected Decoder getDecoder() {
+        return lsbDecoder;
     }
 
     private int headerSize() {

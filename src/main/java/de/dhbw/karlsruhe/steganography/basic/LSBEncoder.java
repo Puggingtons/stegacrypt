@@ -9,7 +9,7 @@ import static de.dhbw.karlsruhe.util.BufferedImageHelper.deepCopy;
 // 1 byte         4 byte            # bytes
 // <algorithm id> <number of bytes> <bytes of data>
 
-public class BasicEncoder implements Encoder {
+public class LSBEncoder implements Encoder {
 
     public final byte ALGORITHM_ID = 1;
 
@@ -19,7 +19,7 @@ public class BasicEncoder implements Encoder {
     private int currentY;
     private int currentColorOffset;
 
-    public BasicEncoder() {
+    public LSBEncoder() {
         currentX = 0;
         currentY = 0;
         currentColorOffset = 0;

@@ -1,7 +1,7 @@
 package de.dhbw.karlsruhe;
 
 import de.dhbw.karlsruhe.steganography.Steganography;
-import de.dhbw.karlsruhe.steganography.basic.BasicSteganography;
+import de.dhbw.karlsruhe.steganography.basic.LSBSteganography;
 import de.dhbw.karlsruhe.view.StegaCryptView;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
@@ -68,7 +68,7 @@ public class Main {
     }
 
     private static void decodeDings() throws IOException {
-        Steganography dings = new BasicSteganography();
+        Steganography dings = new LSBSteganography();
 
         System.out.println(bytesToString(dings.decode(ImageIO.read(new File("examples/dings.png")))));
     }
@@ -77,7 +77,7 @@ public class Main {
         var input = ImageIO.read(new File("examples/1000x1000.png"));
         var fileInput = Files.readAllBytes(Paths.get("examples/test.txt"));
 
-        var steganography = new BasicSteganography();
+        var steganography = new LSBSteganography();
         var output = steganography.encode(fileInput, input);
 
         System.out.println(bytesToString(steganography.decode(output)));

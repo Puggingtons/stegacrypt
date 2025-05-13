@@ -4,10 +4,12 @@ import de.dhbw.karlsruhe.controller.decode.DecodeController;
 import de.dhbw.karlsruhe.controller.encode.EncodeController;
 import de.dhbw.karlsruhe.cryptography.Cryptography;
 import de.dhbw.karlsruhe.cryptography.NoCryptography;
+import de.dhbw.karlsruhe.cryptography.RSACryptography;
 import de.dhbw.karlsruhe.model.decode.DecodeModel;
 import de.dhbw.karlsruhe.model.encode.EncodeModel;
 import de.dhbw.karlsruhe.steganography.Steganography;
-import de.dhbw.karlsruhe.steganography.basic.BasicSteganography;
+import de.dhbw.karlsruhe.steganography.basic.LSBSteganography;
+import de.dhbw.karlsruhe.steganography.stegacrypt.StegaCryptSteganography;
 import de.dhbw.karlsruhe.view.decode.DecodeView;
 import de.dhbw.karlsruhe.view.encode.EncodeView;
 
@@ -24,8 +26,8 @@ public class StegaCryptView extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1000, 700);
 
-        steganographies = new Steganography[]{new BasicSteganography()};
-        cryptographies = new Cryptography[]{new NoCryptography()};
+        steganographies = new Steganography[]{new LSBSteganography(), new StegaCryptSteganography()};
+        cryptographies = new Cryptography[]{new NoCryptography(), new RSACryptography()};
 
         tabs = new JTabbedPane();
 
@@ -44,10 +46,14 @@ public class StegaCryptView extends JFrame {
         connectEncodeModelAndView(encodeModel, encodeView);
 
         // setup available steganographies and cryptographies
-        encodeController.addAvailableSteganography(steganographies[0]);
+        for (Steganography steganography : steganographies) {
+            encodeController.addAvailableSteganography(steganography);
+        }
         encodeController.setSteganography(steganographies[0]);
 
-        encodeController.addAvailableCryptography(cryptographies[0]);
+        for (Cryptography cryptography : cryptographies) {
+            encodeController.addAvailableCryptography(cryptography);
+        }
         encodeController.setCryptography(cryptographies[0]);
 
 
@@ -87,10 +93,14 @@ public class StegaCryptView extends JFrame {
         connectDecodeViewAndController(decodeView, decodeController);
         connectDecodeModelAndView(decodeModel, decodeView);
 
-        decodeController.addAvailableSteganography(steganographies[0]);
+        for (Steganography steganography : steganographies) {
+            decodeController.addAvailableSteganography(steganography);
+        }
         decodeController.setSelectedSteganography(steganographies[0]);
 
-        decodeController.addAvailableCryptography(cryptographies[0]);
+        for (Cryptography cryptography : cryptographies) {
+            decodeController.addAvailableCryptography(cryptography);
+        }
         decodeController.setSelectedCryptography(cryptographies[0]);
 
 
