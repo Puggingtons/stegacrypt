@@ -7,8 +7,10 @@ import java.security.Key;
 
 public class AESInRSACryptography extends Cryptography {
 
-    private AESCryptography aesCryptography;
-    private RSACryptography rsaCryptography;
+    private final AESCryptography aesCryptography;
+    private final RSACryptography rsaCryptography;
+
+    private final int SYMMETRIC_KEY_LENGTH = 256;
 
     public AESInRSACryptography() {
         this.aesCryptography = new AESCryptography();
@@ -39,14 +41,13 @@ public class AESInRSACryptography extends Cryptography {
 
     @Override
     public byte[] decrypt(byte[] data, Key privateKey) throws Exception {
-        final int SYMMETRIC_KEY_LENGTH = 256; // this represents the key size after being encrypted
-        byte[] symmectricKeyByes = new byte[SYMMETRIC_KEY_LENGTH];
-        System.arraycopy(data, 0, symmectricKeyByes, 0, SYMMETRIC_KEY_LENGTH);
+        byte[] symmetricKeyBytes = new byte[SYMMETRIC_KEY_LENGTH];
+        System.arraycopy(data, 0, symmetricKeyBytes, 0, SYMMETRIC_KEY_LENGTH);
 
         byte[] dataToDecrypt = new byte[data.length - SYMMETRIC_KEY_LENGTH];
         System.arraycopy(data, SYMMETRIC_KEY_LENGTH, dataToDecrypt, 0, data.length - 256);
 
-        SecretKeySpec aesKey = new SecretKeySpec(rsaCryptography.decrypt(symmectricKeyByes, privateKey), "AES");
+        SecretKeySpec aesKey = new SecretKeySpec(rsaCryptography.decrypt(symmetricKeyBytes, privateKey), "AES");
         return aesCryptography.decrypt(dataToDecrypt, aesKey);
     }
 }
