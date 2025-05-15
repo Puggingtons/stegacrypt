@@ -1,8 +1,6 @@
 package de.dhbw.karlsruhe.cryptography;
 
 import javax.crypto.spec.SecretKeySpec;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.security.Key;
 
 public class AESInRSACryptography extends Cryptography {
@@ -28,26 +26,32 @@ public class AESInRSACryptography extends Cryptography {
     public byte[] encrypt(byte[] data, Key publicKey) throws Exception {
         Key aesKey = AESCryptography.generateKey();
 
-        byte[] aesEncrypted = aesCryptography.encrypt(data, aesKey);
         byte[] rsaEncryptedAESKey = rsaCryptography.encrypt(aesKey.getEncoded(), publicKey);
+        byte[] aesEncrypted = aesCryptography.encrypt(data, aesKey);
 
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        try {
-            baos.write(rsaEncryptedAESKey);
-            baos.write(aesEncrypted);
-            return baos.toByteArray();
-        } catch (IOException ex) {
-            return null;
-        }
+        byte[] result = new byte[aesEncrypted.length + rsaEncryptedAESKey.length];
+        System.arraycopy(rsaEncryptedAESKey, 0, result, 0, rsaEncryptedAESKey.length);
+        System.arraycopy(aesEncrypted, 0, result, rsaEncryptedAESKey.length, aesEncrypted.length);
+
+        return result;
+
+        // ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        // try {
+        //     baos.write(rsaEncryptedAESKey);
+        //     baos.write(aesEncrypted);
+        //     return baos.toByteArray();
+        // } catch (IOException ex) {
+        //     return null;
+        // }
     }
 
     @Override
     public byte[] decrypt(byte[] data, Key privateKey) throws Exception {
         byte[] symmetricKeyBytes = new byte[SYMMETRIC_KEY_LENGTH];
-        System.arraycopy(data, 0, symmetricKeyBytes, 0, SYMMETRIC_KEY_LENGTH);
-
         byte[] dataToDecrypt = new byte[data.length - SYMMETRIC_KEY_LENGTH];
-        System.arraycopy(data, SYMMETRIC_KEY_LENGTH, dataToDecrypt, 0, data.length - 256);
+
+        System.arraycopy(data, 0, symmetricKeyBytes, 0, SYMMETRIC_KEY_LENGTH);
+        System.arraycopy(data, SYMMETRIC_KEY_LENGTH, dataToDecrypt, 0, data.length - SYMMETRIC_KEY_LENGTH);
 
         SecretKeySpec aesKey = new SecretKeySpec(rsaCryptography.decrypt(symmetricKeyBytes, privateKey), "AES");
         return aesCryptography.decrypt(dataToDecrypt, aesKey);

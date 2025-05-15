@@ -8,12 +8,8 @@ import java.awt.image.BufferedImage;
 
 public class LSBSteganography extends Steganography {
 
-    private final LSBEncoder lsbWriter;
-    private final LSBDecoder lsbDecoder;
 
     public LSBSteganography() {
-        this.lsbWriter = new LSBEncoder();
-        this.lsbDecoder = new LSBDecoder();
     }
 
     @Override
@@ -28,12 +24,12 @@ public class LSBSteganography extends Steganography {
 
     @Override
     protected Encoder getWriter() {
-        return lsbWriter;
+        return new LSBEncoder();
     }
 
     @Override
     protected Decoder getDecoder() {
-        return lsbDecoder;
+        return new LSBDecoder();
     }
 
     private int headerSize() {

@@ -48,5 +48,6 @@ public class RSACryptography extends Cryptography {
 
     private Cipher getCipher() throws Exception {
         return Cipher.getInstance("RSA");
+        //     RSA/ECB/OAEPWithSHA-256AndMGF1Padding
     }
 }

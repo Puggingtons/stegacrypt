@@ -18,9 +18,9 @@ import java.security.*;
 import java.security.spec.X509EncodedKeySpec;
 
 public class RSAKeyHandler {
-    public static void saveKeyToFile(Key privateKey, File file) throws IOException {
+    public static void saveKeyToFile(Key key, File file) throws IOException {
         JcaPEMWriter writer = new JcaPEMWriter(new FileWriter(file));
-        writer.writeObject(privateKey);
+        writer.writeObject(key);
         writer.close();
     }
 

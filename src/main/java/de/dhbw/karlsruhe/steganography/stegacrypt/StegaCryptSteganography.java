@@ -8,21 +8,19 @@ import java.awt.image.BufferedImage;
 
 public class StegaCryptSteganography extends Steganography {
 
-    private final StegaCryptDecoder decoder;
-    private final StegaCryptEncoder encoder;
-
-    private final int bitDepth;
+    private int bitDepth;
 
     public StegaCryptSteganography() {
         bitDepth = 2;
+    }
 
-        this.decoder = new StegaCryptDecoder();
-        this.encoder = new StegaCryptEncoder(bitDepth);
+    public void setBitDepth(int bitDepth) {
+        this.bitDepth = bitDepth;
     }
 
     @Override
     public String toString() {
-        return "StegaCrypt Steganography";
+        return "NoiseParity Steganography";
     }
 
     @Override
@@ -32,12 +30,12 @@ public class StegaCryptSteganography extends Steganography {
 
     @Override
     protected Encoder getWriter() {
-        return encoder;
+        return new StegaCryptEncoder(bitDepth);
     }
 
     @Override
     protected Decoder getDecoder() {
-        return decoder;
+        return new StegaCryptDecoder();
     }
 
     private int headerSize() {

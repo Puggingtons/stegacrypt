@@ -81,6 +81,8 @@ public class DecodeView extends JPanel {
         String extension = FileHelper.getExtension(bytes);
 
         switch (extension) {
+            case "priv":
+            case "pub":
             case "txt":
                 System.out.println("creating text area");
                 JTextArea textArea = new JTextArea(bytesToString(FileHelper.getData(bytes)));
